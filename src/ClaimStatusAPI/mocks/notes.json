@@ -1,0 +1,154 @@
+[
+  {
+    "id": "1001",
+    "notes": [
+      {
+        "timestamp": "2025-08-01T15:00:00Z",
+        "author": "Alice Martin (claimant)",
+        "role": "claimant",
+        "text": "Rear-end collision at Main St and 5th. Pain in neck and lower back, took photos of damage and vehicle location. Police report filed (ref PR-556). Provided initial estimate from local bodyshop ~ $4,200 for bumper and alignment.",
+        "tags": ["incident", "photos", "police-report"]
+      },
+      {
+        "timestamp": "2025-08-02T10:00:00Z",
+        "author": "Adjuster ADJ-200",
+        "role": "adjuster",
+        "text": "Spoke with claimant. Collected police report number and medical contact details. Opened claim, set initial reserve for potential soft tissue and vehicle repair. Requested medical records release form and vehicle repair estimate. Scheduled inspection for 2025-08-04.",
+        "tags": ["triage", "reserve", "inspection"],
+        "actions": ["request-medical-records", "schedule-inspection"]
+      },
+      {
+        "timestamp": "2025-08-04T09:30:00Z",
+        "author": "Inspector - AutoCheck",
+        "role": "inspector",
+        "text": "On-site inspection complete. Rear bumper crushed, trunk misaligned, suspected frame OK. Estimated repair: $6,800 (parts + labor). Photos uploaded to claim folder. No airbags deployed. Claimant reports continued stiffness; advised to get GP check if symptoms persist.",
+        "tags": ["inspection", "estimate", "photos"],
+        "attachments": ["photo1.jpg","photo2.jpg"]
+      },
+      {
+        "timestamp": "2025-08-06T11:20:00Z",
+        "author": "Adjuster ADJ-200",
+        "role": "adjuster",
+        "text": "Received initial medical note indicating soft tissue injury and recommendation for physio if symptoms not improved in 2 weeks. Adjuster increased reserve to cover repair + possible medical payments. Next: obtain final repair invoice and follow up on medical outcomes.",
+        "tags": ["medical", "reserve-update"],
+        "followUp": "Follow up with claimant and repair shop in 7 days"
+      }
+    ]
+  },
+  {
+    "id": "1002",
+    "notes": [
+      {
+        "timestamp": "2025-07-20T09:00:00Z",
+        "author": "Robert Cheng (claimant)",
+        "role": "claimant",
+        "text": "Woke to find water stains on kitchen ceiling after heavy rain. House on single-storey with known guttering issue. Sent photos of ceiling and water run-off. Concerned about mould and structural damage to kitchen cabinets.",
+        "tags": ["initial-report", "photos"]
+      },
+      {
+        "timestamp": "2025-07-20T10:30:00Z",
+        "author": "Adjuster ADJ-201",
+        "role": "adjuster",
+        "text": "Triage call: requested plumber report and scope of repairs. Advised claimant to mitigate (tarps, dry out) and keep receipts. Set interim reserve for emergency repairs. Booked contractor for assessment 2025-07-21.",
+        "tags": ["triage", "mitigation", "contractor-assessment"],
+        "actions": ["request-plumber-report", "advise-mitigation"]
+      },
+      {
+        "timestamp": "2025-07-21T14:45:00Z",
+        "author": "Contractor - ClearFlow",
+        "role": "contractor",
+        "text": "Inspected guttering and roofline; heavy debris causing overflow. Water ingress through fascia into ceiling cavity; localized replacement and drying required. Quoted $3,300 including demolition of small area of ceiling and replacement of damaged insulation.",
+        "tags": ["contractor-report", "estimate"],
+        "attachments": ["contractor-report.pdf"]
+      },
+      {
+        "timestamp": "2025-07-25T12:00:00Z",
+        "author": "Adjuster ADJ-201",
+        "role": "adjuster",
+        "text": "Approved contractor estimate for immediate repairs. Paid emergency mitigation invoice $1,200. Monitoring for mould; recommended remediation if mould observed. Next steps: confirm final invoice and check for secondary damages.",
+        "tags": ["payment", "mitigation", "next-steps"]
+      }
+    ]
+  },
+  {
+    "id": "1003",
+    "notes": [
+      {
+        "timestamp": "2025-06-13T11:00:00Z",
+        "author": "Maria Gonzalez (claimant)",
+        "role": "claimant",
+        "text": "Vehicle broken into overnight; left side window smashed and handbag stolen with personal items. Provided police report PR-501 and list of stolen items including laptop and jewellery. Also provided receipts for electronics.",
+        "tags": ["theft", "police-report", "receipts"]
+      },
+      {
+        "timestamp": "2025-06-13T13:20:00Z",
+        "author": "Adjuster ADJ-198",
+        "role": "adjuster",
+        "text": "Confirmed police report and victim support resources. Authorised glass repair and interim payment for essential items. Claimed amount for stolen items under policy limits. Final documentation required: proof of ownership/receipts for high-value items.",
+        "tags": ["authorisation", "payment", "documentation"],
+        "actions": ["request-receipts"]
+      },
+      {
+        "timestamp": "2025-06-20T09:00:00Z",
+        "author": "Repair Shop - GlassFix",
+        "role": "contractor",
+        "text": "Completed window replacement. Invoice received and paid. No evidence of additional vehicle damage. Claim moved to closure pending final confirmation of stolen items claim and settlement.",
+        "tags": ["repair", "invoice", "closure"]
+      }
+    ]
+  },
+  {
+    "id": "1004",
+    "notes": [
+      {
+        "timestamp": "2025-09-05T12:30:00Z",
+        "author": "James O'Neill (claimant)",
+        "role": "claimant",
+        "text": "Slipped in store when floor was wet. Injured wrist and required A&E; x-ray negative but sprain confirmed. Store admits liability; provided witness contact. Sent photos of scene and medical note.",
+        "tags": ["injury", "liability", "medical"]
+      },
+      {
+        "timestamp": "2025-09-06T10:00:00Z",
+        "author": "Adjuster ADJ-205",
+        "role": "adjuster",
+        "text": "Contacted store insurer and claimant. Liability acknowledged by store manager. Negotiated initial interim payment for medical costs and time off work. Estimate for ongoing physio included. Next: agree final settlement for medical + loss of earnings.",
+        "tags": ["negotiation", "interim-payment", "physio"]
+      },
+      {
+        "timestamp": "2025-09-12T09:00:00Z",
+        "author": "Physio - ActiveCare",
+        "role": "provider",
+        "text": "Physiotherapy assessment indicates grade 2 sprain; expected 6–8 weeks recovery. Provided treatment plan and estimate for 8 sessions. Submitted treatment plan to insurer.",
+        "tags": ["medical-report", "treatment-plan"],
+        "attachments": ["physio-plan.pdf"]
+      }
+    ]
+  },
+  {
+    "id": "1005",
+    "notes": [
+      {
+        "timestamp": "2025-08-15T04:00:00Z",
+        "author": "Sonia Patel (claimant)",
+        "role": "claimant",
+        "text": "Woke to find my front door lock tampered with; possible attempted break-in. No clear theft but damage to lock and door frame. Sent photos. Concerned about security and wants door reinforced.",
+        "tags": ["attempted-burglary", "damage", "photos"]
+      },
+      {
+        "timestamp": "2025-08-16T09:15:00Z",
+        "author": "Adjuster ADJ-210",
+        "role": "adjuster",
+        "text": "Requested locksmith report and quotes for door/lock repair. Advised claimant to secure property. Initial reserve set for minor repairs. If evidence of forced entry confirmed, consider additional security upgrades under policy.",
+        "tags": ["triage", "reserve", "security"],
+        "actions": ["request-locksmith-quote"]
+      },
+      {
+        "timestamp": "2025-08-18T14:00:00Z",
+        "author": "Locksmith - SecureNow",
+        "role": "contractor",
+        "text": "Replaced damaged lock and reinforced frame. Invoice submitted for $450. No sign of entry to interior; recommended additional sensor for peace of mind (optional).",
+        "tags": ["repair", "invoice"]
+      }
+    ]
+  }
+]

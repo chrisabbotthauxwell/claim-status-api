@@ -51,6 +51,15 @@ info: Microsoft.Hosting.Lifetime[0]
 2. Access the Swagger UI for the Claims Status API on `/swagger`
 
 ### Containerised (Docker) service
+Build and run the containerised HTTP service from Docker
+1. Build new Docker image from repo root
+```
+docker build -f src/ClaimStatusAPI/Dockerfile -t claimstatusapi:latest src/ClaimStatusAPI
+```
+2. Run containerised app
+```
+docker run --rm -e ASPNETCORE_ENVIRONMENT=Development -p 5017:80 claimstatusapi:latest
+```
 
 ## Repository structure
 ```

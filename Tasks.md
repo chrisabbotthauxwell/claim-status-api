@@ -15,7 +15,7 @@ This document details the steps and tasks required to complete the exercise, and
 - [ ] Create integration test project
 - [x] Create `GET /claims/{id}` endpoint --> returns static claim JSON from `claims.json`
 - [x] Implement logging
-- [ ] Generate `notes.json`
+- [x] Generate `notes.json`
 - [ ] Create `POST /claims/{id}/summarize` endpoint --> reads mock notes for the id from `notes.json`, calls Azure OpenAI to generate multi-part summary for the claim using claim notes and claim details
     - Requires:
         - OpenAI deployment + chat completion endpoint
@@ -41,7 +41,7 @@ This document details the steps and tasks required to complete the exercise, and
 - [ ] Create APIM
 
 ## Containerise the service
-- [ ] Containerise the service --> Dockerfile
+- [x] Containerise the service --> Dockerfile
 - [ ] Push the image to ACR
 
 ## CI/CD pipeline in Azure DevOps -- build & deploy flow:
@@ -68,14 +68,15 @@ This document details the steps and tasks required to complete the exercise, and
 ## Repository Structure
 claim-status-api/
 ├── src/                     # service source + Dockerfile
-│   └── ClaimStatusAPI/
-│       ├── Controllers/
-│       ├── Models/
-│       ├── mocks/
-│       │   ├── claims.json  # 5–8 claim records
-│       │   └── notes.json   # 3–4 notes blobs
-│       ├── Dockerfile
-│       └── ClaimStatusAPI.csproj
+│   ├── ClaimStatusAPI/
+│   │   ├── Controllers/
+│   │   ├── Models/
+│   │   ├── mocks/
+│   │   │   ├── claims.json  # 5–8 claim records
+│   │   │   └── notes.json   # 3–4 notes blobs
+│   │   ├── Dockerfile
+│   │   └── ClaimStatusAPI.csproj
+│   └── ClaimStatusAPI.UnitTests/
 ├── apim/                    # APIM policy files or export
 ├── iac/                     # Bicep/Terraform/Az CLI templates
 ├── pipelines/
