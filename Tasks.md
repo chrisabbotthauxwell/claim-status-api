@@ -11,7 +11,7 @@ This document details the steps and tasks required to complete the exercise, and
 ## Implement Claim Status API
 - [x] Skeleton folder set up
 - [x] Boiler plate .net API using WeatherForecast template
-- [ ] Create unit test project
+- [x] Create unit test project
 - [ ] Create integration test project
 - [ ] Create `GET /claims/{id}` endpoint --> returns static claim JSON from `claims.json`
 - [ ] Generate `notes.json`

@@ -1,0 +1,49 @@
+# Build folders
+bin/
+obj/
+artifacts/
+publish/
+out/
+
+# Rider/VS/VSCode
+.vs/
+.vscode/
+.idea/
+
+# User and workspace files
+*.user
+*.suo
+*.userosscache
+*.sln.dotsettings
+*.sln.DotSettings
+
+# Test results / coverage
+TestResults/
+coverage/
+*.coverage
+*.trx
+
+# NuGet packages
+*.nupkg
+packages/
+
+# Rider caches
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Secrets / local settings
+secrets.json
+appsettings.*.Local.json
+.env
+
+# Docker
+docker-compose.override.yml
+
+# Optional: lock files / temporary
+project.lock.json
+*.tmp
