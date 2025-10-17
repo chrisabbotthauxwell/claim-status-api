@@ -9,8 +9,8 @@ This document details the steps and tasks required to complete the exercise, and
 - [ ] **Documentation:** auto-generate API reference from routes and draft a short ADR (“Adopt APIM as gateway for claims summarization”).
 
 ## Implement Claim Status API
-- [ ] Skeleton folder set up
-- [ ] Boiler plate .net API using WeatherForecast template
+- [x] Skeleton folder set up
+- [x] Boiler plate .net API using WeatherForecast template
 - [ ] Create unit test project
 - [ ] Create integration test project
 - [ ] Create `GET /claims/{id}` endpoint --> returns static claim JSON from `claims.json`
@@ -67,9 +67,14 @@ This document details the steps and tasks required to complete the exercise, and
 ## Repository Structure
 claim-status-api/
 ├── src/                     # service source + Dockerfile
-├── mocks/
-│   ├── claims.json          # 5–8 claim records
-│   └── notes.json           # 3–4 notes blobs
+│   └── ClaimStatusAPI/
+│       ├── Controllers/
+│       ├── Models/
+│       ├── mocks/
+│       │   ├── claims.json  # 5–8 claim records
+│       │   └── notes.json   # 3–4 notes blobs
+│       ├── Dockerfile
+│       └── ClaimStatusAPI.csproj
 ├── apim/                    # APIM policy files or export
 ├── iac/                     # Bicep/Terraform/Az CLI templates
 ├── pipelines/
