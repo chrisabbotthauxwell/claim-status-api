@@ -1,0 +1,102 @@
+[
+  {
+    "id": "1001",
+    "claimNumber": "CLM-1001",
+    "policyNumber": "POL-4321",
+    "claimant": {
+      "firstName": "Alice",
+      "lastName": "Martin",
+      "phone": "555-0101",
+      "email": "alice.martin@example.com"
+    },
+    "dateOfLoss": "2025-08-01T14:30:00Z",
+    "reportedDate": "2025-08-02T09:15:00Z",
+    "status": "Open",
+    "reserveAmount": 12000.00,
+    "paidAmount": 0.00,
+    "estimatedLoss": 15000.00,
+    "adjusterId": "ADJ-200",
+    "description": "Rear-end collision at intersection; claimant reports whiplash and rear bumper damage.",
+    "notesRef": "1001"
+  },
+  {
+    "id": "1002",
+    "claimNumber": "CLM-1002",
+    "policyNumber": "POL-1987",
+    "claimant": {
+      "firstName": "Robert",
+      "lastName": "Cheng",
+      "phone": "555-0202",
+      "email": "robert.cheng@example.com"
+    },
+    "dateOfLoss": "2025-07-20T06:10:00Z",
+    "reportedDate": "2025-07-20T08:45:00Z",
+    "status": "In Review",
+    "reserveAmount": 5000.00,
+    "paidAmount": 1200.00,
+    "estimatedLoss": 5200.00,
+    "adjusterId": "ADJ-201",
+    "description": "Water ingress from faulty guttering causing ceiling damage in kitchen.",
+    "notesRef": "1002"
+  },
+  {
+    "id": "1003",
+    "claimNumber": "CLM-1003",
+    "policyNumber": "POL-5550",
+    "claimant": {
+      "firstName": "Maria",
+      "lastName": "Gonzalez",
+      "phone": "555-0303",
+      "email": "maria.gonzalez@example.com"
+    },
+    "dateOfLoss": "2025-06-12T22:00:00Z",
+    "reportedDate": "2025-06-13T10:00:00Z",
+    "status": "Closed",
+    "reserveAmount": 0.00,
+    "paidAmount": 3000.00,
+    "estimatedLoss": 3000.00,
+    "adjusterId": "ADJ-198",
+    "description": "Theft from vehicle while parked overnight; broken window and stolen personal items.",
+    "notesRef": "1003"
+  },
+  {
+    "id": "1004",
+    "claimNumber": "CLM-1004",
+    "policyNumber": "POL-7701",
+    "claimant": {
+      "firstName": "James",
+      "lastName": "O'Neill",
+      "phone": "555-0404",
+      "email": "james.oneill@example.com"
+    },
+    "dateOfLoss": "2025-09-05T11:20:00Z",
+    "reportedDate": "2025-09-05T12:10:00Z",
+    "status": "Settled",
+    "reserveAmount": 0.00,
+    "paidAmount": 8200.50,
+    "estimatedLoss": 8200.50,
+    "adjusterId": "ADJ-205",
+    "description": "Slip and fall on wet floor in store; claimant sustained a sprained wrist.",
+    "notesRef": "1004"
+  },
+  {
+    "id": "1005",
+    "claimNumber": "CLM-1005",
+    "policyNumber": "POL-3003",
+    "claimant": {
+      "firstName": "Sonia",
+      "lastName": "Patel",
+      "phone": "555-0505",
+      "email": "sonia.patel@example.com"
+    },
+    "dateOfLoss": "2025-08-15T03:00:00Z",
+    "reportedDate": "2025-08-15T09:30:00Z",
+    "status": "Open",
+    "reserveAmount": 25000.00,
+    "paidAmount": 0.00,
+    "estimatedLoss": 28000.00,
+    "adjusterId": "ADJ-210",
+    "description": "Major hailstorm damage to roof and several windows; claimant requesting emergency repairs.",
+    "notesRef": "1005"
+  }
+]

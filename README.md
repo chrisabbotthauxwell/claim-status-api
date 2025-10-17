@@ -28,7 +28,7 @@ dotnet test src/ClaimStatusAPI.UnitTests/ClaimStatusAPI.UnitTests.csproj
 ### Vanilla .net HTTP service
 Build and Run the HTTP WebAPI from the terminal window.
 
-Browse to the ClaimStatusAPI folder and run `dotnet build` followed by `dotnet run`:
+1. Browse to the ClaimStatusAPI folder and run `dotnet build` followed by `dotnet run`:
 
 ```
 C:\claim-status-api\src\ClaimStatusAPI> dotnet build
@@ -47,6 +47,8 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Content root path: C:\claim-status-api\src\ClaimStatusAPI
 ```
+
+2. Access the Swagger UI for the Claims Status API on `/swagger`
 
 ### Containerised (Docker) service
 

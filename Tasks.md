@@ -13,7 +13,8 @@ This document details the steps and tasks required to complete the exercise, and
 - [x] Boiler plate .net API using WeatherForecast template
 - [x] Create unit test project
 - [ ] Create integration test project
-- [ ] Create `GET /claims/{id}` endpoint --> returns static claim JSON from `claims.json`
+- [x] Create `GET /claims/{id}` endpoint --> returns static claim JSON from `claims.json`
+- [x] Implement logging
 - [ ] Generate `notes.json`
 - [ ] Create `POST /claims/{id}/summarize` endpoint --> reads mock notes for the id from `notes.json`, calls Azure OpenAI to generate multi-part summary for the claim using claim notes and claim details
     - Requires:
@@ -34,7 +35,7 @@ This document details the steps and tasks required to complete the exercise, and
 - [ ] Create foundation powershell script to run `az cli` tasks
 - [ ] Create Resource Group
 - [ ] Create OpenAI resources: AI Foundry, GPT-4o
-- [ ] Create Container Registry
+- [ ] Create Container Registry & Container App
 - [ ] Create Log Analytics workspace
 - [ ] Create App Insights
 - [ ] Create APIM
