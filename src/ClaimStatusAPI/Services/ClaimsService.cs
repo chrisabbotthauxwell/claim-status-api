@@ -45,7 +45,7 @@ public class ClaimsService : IClaimsService
         _logger.LogInformation("Getting all claims");
         return _claims;
     }
-    
+
     /// <summary>
     /// Get claim by id
     /// </summary>
@@ -54,14 +54,6 @@ public class ClaimsService : IClaimsService
     public Claim? GetById(string claimId)
     {
         _logger.LogInformation("Getting claim by id: {ClaimId}", claimId);
-        ///var claim = _claims.FirstOrDefault(c => c.Id.Equals(claimId, StringComparison.OrdinalIgnoreCase));
-        
-        
-        if (_claims == null || _claims.Count == 0)
-        {
-            _logger.LogWarning("No claims loaded to search for id: {ClaimId}", claimId);
-            return null;
-        }
 
         var claim = _claims.FirstOrDefault(c => c?.Id != null && c.Id.Equals(claimId, StringComparison.OrdinalIgnoreCase));
 
@@ -74,5 +66,10 @@ public class ClaimsService : IClaimsService
             _logger.LogInformation("Claim with id: {ClaimId} found", claimId);
         }
         return claim;
+    }
+    
+    public Task<ClaimSummary?> GetSummaryByIdAsync(string claimId)
+    {
+        throw new NotImplementedException();
     }
 }
