@@ -31,6 +31,91 @@ This document details the steps and tasks required to complete the exercise, and
 }
 ```
 
+## POST /claims/{id}/summarize — Master checklist
+
+Use this master checklist to track work required to implement the POST /claims/{id}/summarize endpoint (reads mock notes, calls Azure OpenAI, returns multi‑part ClaimSummary).
+
+### Phase 0 — Plan & prerequisites
+- [x] Define acceptance criteria (response shape, status codes, error handling, latency/SLA)
+  - Response must include: summary, customerSummary, adjusterSummary, nextStep
+  - Endpoint returns 200 with valid JSON, 404 when claim or notes missing, 502/500 for upstream errors
+- [x] Confirm notes.json + claims.json are present and copied to publish output
+- [x] Decide local secret mechanism (dotnet user-secrets or env vars) and production secret plan (Key Vault / managed identity)
+
+### Phase 1 — Models & Contracts
+- [x] Add DTOs
+  - [x] ClaimNote (single note record)
+  - [x] ClaimsNotes (collection wrapper with claim id)
+  - [x] ClaimSummary (summary, customerSummary, adjusterSummary, nextStep)
+- [x] Update IClaimsService
+  - [x] Add Task<ClaimSummary?> GetSummaryByIdAsync(string claimId) signature (async)
+
+### Phase 2 — OpenAI integration abstraction
+- [x] Add IOpenAiService interface (single method: Task<string> CreateChatCompletionAsync(promptPayload,...))
+- [x] Add OpenAiService implementation using OpenAI SDK
+- [ ] Implement safe parsing helper to convert model output to ClaimSummary (validate JSON, strict schema)
+
+### Phase 3 — ClaimsService changes
+- [x] Implement reading notes.json into ClaimsNotes objects (copy to output, case-insensitive deserialization)
+- [x] Implement ClaimsService.GetSummaryByIdAsync:
+  - [x] Fetch claim by id
+  - [x] Fetch corresponding notes
+  - [x] Build prompt bundle (claim details + notes)
+  - [x] Call IOpenAiService and parse/validate result into ClaimSummary
+  - [ ] Graceful handling when model returns invalid JSON (retry/transform or return 502)
+
+### Phase 4 — API Controller
+- [x] Add POST /claims/{id}/summarize endpoint to ClaimsController
+  - [x] Route: [HttpPost("{id}/summarize")]
+  - [x] Signature: ssync Task<ActionResult<ClaimSummary>> SummarizeClaimAsync(string id)
+  - [x] Return 200/404/502 as appropriate
+- [ ] Add request/response OpenAPI documentation (Swagger annotations)
+
+### Phase 5 — Prompt & orchestration
+- [x] Design system + user prompt template (explicitly request strict JSON with the four fields)
+- [ ] Implement prompt truncation / chunking strategy for long notes (or pre-summarize long notes)
+- [ ] Add deterministic instructions for token limits and model selection (configurable)
+
+### Phase 6 — Resilience & security
+- [ ] Add HTTP client timeout + retries (Polly) around OpenAI calls
+- [ ] Validate and sanitize inputs (id param)
+- [ ] Rate-limit or throttle summarization endpoint (APIM or in-app)
+- [x] Ensure secrets are never checked into repo; use env vars or user-secrets locally
+
+### Phase 7 — Tests
+- [x] Unit tests
+  - [ ] Mock IOpenAiService to assert ClaimsService and Controller behavior
+  - [ ] Tests for success, missing claim, missing notes, invalid model response
+- [ ] Integration tests (optional)
+  - [ ] Local integration test that runs against a test double or recorded responses (avoid real OpenAI calls)
+- [ ] End-to-end manual test plan (Swagger and container run)
+
+### Phase 8 — Container / CI / Deploy prep
+- [x] Ensure notes.json is included in csproj publish output
+- [x] Update Dockerfile if required (publish contains mocks)
+- [ ] Add CI step (pipeline) to run unit tests
+- [ ] Add CI step to build image and push to registry (ACR) — include image scan step later
+- [ ] Add environment variable wiring for Azure secrets in deployment scripts / Bicep
+
+### Phase 9 — Observability & Ops
+- [x] Add structured logging for prompt, request id, model response status (avoid logging secrets)
+- [ ] Add metrics: request latency, OpenAI call success/failure, token usage (if available)
+- [ ] Create KQL snippets for errors and high-latency traces
+
+### Phase 10 — Documentation & handover
+- [x] Update README with local dev steps and secret setup
+- [ ] Add example curl / HTTP snippets for the new endpoint
+- [ ] Document prompt template and intended model behavior (for future tuning)
+- [ ] Create an ADR if using OpenAI for production decision-making (risk/cost/ops)
+
+---
+
+Notes / Helpful hints
+- Keep OpenAI code behind an interface so unit tests never require network calls.
+- Return a clear error payload on upstream failure so callers (and APIM) can act appropriately.
+- For local development prefer dotnet user-secrets or env vars; migrate to Key Vault in Azure.
+- Break the work into small PRs: Models+IClaimsService → ClaimsService notes load → OpenAI service → Controller + tests.
+
 ## Set up infrastricture
 - [ ] Create foundation powershell script to run `az cli` tasks
 - [ ] Create Resource Group
