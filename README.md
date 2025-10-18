@@ -112,7 +112,7 @@ var model = builder.Configuration["AzureOpenAI:Model"];
 ### 2) Container local / CI — Environment variables (for containers / pipelines)
 - Provide secrets as environment variables when running locally with Docker:
 ```bash
-docker run --rm -e AZURE_OPENAI_ENDPOINT="https://..." -e AZURE_OPENAI_KEY="..." -e OPENAI_MODEL="gpt-4o-mini" -p 5017:80 claimstatusapi:0.1.0
+docker run --rm -e ASPNETCORE_ENVIRONMENT=Development -e AZURE_OPENAI_ENDPOINT="https://..." -e AZURE_OPENAI_KEY="..." -e OPENAI_MODEL="gpt-4o-mini" -p 5017:80 claimstatusapi:0.1.0
 ```
 - In CI/pipeline, store values in secret variables and inject as env vars during build/release.
 - Read in code (prefer a fallback to allow either config style):
@@ -133,9 +133,3 @@ var model = builder.Configuration["AzureOpenAI:Model"]
 builder.Configuration.AddAzureKeyVault(new Uri("https://<your-vault>.vault.azure.net/"), new DefaultAzureCredential());
 ```
 - Advantages: centralized rotation, RBAC, audit logs, no secrets in app/container.
-
-### Security rules & notes
-- Do NOT add a repo-level `secrets.json` with real secrets, even if listed in .gitignore. Use user-secrets or env vars.
-- If a secret is ever committed, rotate it immediately and remove from repo history.
-- Keep OpenAI keys out of logs and never include secrets in telemetry.
-- Inject an abstraction (IOpenAiService) so unit tests can mock the service and avoid network calls / real secrets.

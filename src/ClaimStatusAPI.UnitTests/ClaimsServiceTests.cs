@@ -1,14 +1,20 @@
+using System.Text.Json;
 using ClaimStatusAPI.Services;
 using Microsoft.Extensions.Logging;
 using Moq;
+using OpenAI.Chat;
+using ClaimStatusAPI.Models;
+
 public class ClaimsServiceTests
 {
     private readonly ClaimsService _claimsService;
     private readonly Mock<ILogger<ClaimsService>> _loggerMock;
+    private readonly Mock<IOpenAiService> _openAiServiceMock;
     public ClaimsServiceTests()
     {
         _loggerMock = new Mock<ILogger<ClaimsService>>();
-        _claimsService = new ClaimsService(_loggerMock.Object);
+        _openAiServiceMock = new Mock<IOpenAiService>();
+        _claimsService = new ClaimsService(_loggerMock.Object, _openAiServiceMock.Object);
     }
 
     [Fact]
@@ -36,5 +42,20 @@ public class ClaimsServiceTests
 
         // Assert
         Assert.Null(claim);
+    }
+
+    [Fact]
+    public void GetSummaryForClaimById_ShouldReturnNull_WhenClaimDoesNotExist()
+    {
+        // Arrange
+        var nonExistingClaimId = "9999";
+
+        // Act
+        var summaryTask = _claimsService.GetSummaryByIdAsync(nonExistingClaimId);
+        summaryTask.Wait();
+        var summary = summaryTask.Result;
+
+        // Assert
+        Assert.Null(summary);
     }
 }

@@ -72,7 +72,7 @@ Use this master checklist to track work required to implement the POST /claims/{
 - [ ] Add request/response OpenAPI documentation (Swagger annotations)
 
 ### Phase 5 — Prompt & orchestration
-- [ ] Design system + user prompt template (explicitly request strict JSON with the four fields)
+- [x] Design system + user prompt template (explicitly request strict JSON with the four fields)
 - [ ] Implement prompt truncation / chunking strategy for long notes (or pre-summarize long notes)
 - [ ] Add deterministic instructions for token limits and model selection (configurable)
 
@@ -80,10 +80,10 @@ Use this master checklist to track work required to implement the POST /claims/{
 - [ ] Add HTTP client timeout + retries (Polly) around OpenAI calls
 - [ ] Validate and sanitize inputs (id param)
 - [ ] Rate-limit or throttle summarization endpoint (APIM or in-app)
-- [ ] Ensure secrets are never checked into repo; use env vars or user-secrets locally
+- [x] Ensure secrets are never checked into repo; use env vars or user-secrets locally
 
 ### Phase 7 — Tests
-- [ ] Unit tests
+- [x] Unit tests
   - [ ] Mock IOpenAiService to assert ClaimsService and Controller behavior
   - [ ] Tests for success, missing claim, missing notes, invalid model response
 - [ ] Integration tests (optional)
@@ -91,19 +91,19 @@ Use this master checklist to track work required to implement the POST /claims/{
 - [ ] End-to-end manual test plan (Swagger and container run)
 
 ### Phase 8 — Container / CI / Deploy prep
-- [ ] Ensure notes.json is included in csproj publish output
-- [ ] Update Dockerfile if required (publish contains mocks)
+- [x] Ensure notes.json is included in csproj publish output
+- [x] Update Dockerfile if required (publish contains mocks)
 - [ ] Add CI step (pipeline) to run unit tests
 - [ ] Add CI step to build image and push to registry (ACR) — include image scan step later
 - [ ] Add environment variable wiring for Azure secrets in deployment scripts / Bicep
 
 ### Phase 9 — Observability & Ops
-- [ ] Add structured logging for prompt, request id, model response status (avoid logging secrets)
+- [x] Add structured logging for prompt, request id, model response status (avoid logging secrets)
 - [ ] Add metrics: request latency, OpenAI call success/failure, token usage (if available)
 - [ ] Create KQL snippets for errors and high-latency traces
 
 ### Phase 10 — Documentation & handover
-- [ ] Update README with local dev steps and secret setup
+- [x] Update README with local dev steps and secret setup
 - [ ] Add example curl / HTTP snippets for the new endpoint
 - [ ] Document prompt template and intended model behavior (for future tuning)
 - [ ] Create an ADR if using OpenAI for production decision-making (risk/cost/ops)
