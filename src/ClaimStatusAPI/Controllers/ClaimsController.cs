@@ -31,4 +31,18 @@ public class ClaimsController : ControllerBase
         _logger.LogInformation("Claim with ID: {ClaimId} found", id);
         return Ok(claim);
     }
+
+    [HttpPost("{id}/summarize")]
+    public async Task<ActionResult<ClaimSummary>> SummarizeClaimAsync(string id)
+    {
+        _logger.LogInformation("Summarizing claim with ID: {ClaimId}", id);
+        var summary = await _claimsService.GetSummaryByIdAsync(id);
+        if (summary is null)
+        {
+            _logger.LogWarning("Claim summary for ID: {ClaimId} not found", id);
+            return NotFound();
+        }
+        _logger.LogInformation("Claim summary for ID: {ClaimId} generated", id);
+        return Ok(summary);
+    }
 }

@@ -96,6 +96,10 @@ dotnet user-secrets set "AzureOpenAI:Endpoint" "https://<your-endpoint>"
 dotnet user-secrets set "AzureOpenAI:Key" "<your-key>"
 dotnet user-secrets set "AzureOpenAI:Model" "gpt-4o-mini"
 ```
+- Confirm values
+```
+dotnet user-secrets list
+```
 - Access in code (Program.cs):
 ```csharp
 // sample read (user-secrets are integrated into IConfiguration during development)

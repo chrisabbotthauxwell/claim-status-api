@@ -51,24 +51,24 @@ Use this master checklist to track work required to implement the POST /claims/{
   - [x] Add Task<ClaimSummary?> GetSummaryByIdAsync(string claimId) signature (async)
 
 ### Phase 2 — OpenAI integration abstraction
-- [ ] Add IOpenAiService interface (single method: Task<string> CreateChatCompletionAsync(promptPayload,...))
-- [ ] Add OpenAiService implementation using IHttpClientFactory or Azure SDK (injectable, returns raw model output)
+- [x] Add IOpenAiService interface (single method: Task<string> CreateChatCompletionAsync(promptPayload,...))
+- [x] Add OpenAiService implementation using OpenAI SDK
 - [ ] Implement safe parsing helper to convert model output to ClaimSummary (validate JSON, strict schema)
 
 ### Phase 3 — ClaimsService changes
-- [ ] Implement reading notes.json into ClaimsNotes objects (copy to output, case-insensitive deserialization)
-- [ ] Implement ClaimsService.GetSummaryByIdAsync:
-  - [ ] Fetch claim by id
-  - [ ] Fetch corresponding notes
-  - [ ] Build prompt bundle (claim details + notes)
-  - [ ] Call IOpenAiService and parse/validate result into ClaimSummary
+- [x] Implement reading notes.json into ClaimsNotes objects (copy to output, case-insensitive deserialization)
+- [x] Implement ClaimsService.GetSummaryByIdAsync:
+  - [x] Fetch claim by id
+  - [x] Fetch corresponding notes
+  - [x] Build prompt bundle (claim details + notes)
+  - [x] Call IOpenAiService and parse/validate result into ClaimSummary
   - [ ] Graceful handling when model returns invalid JSON (retry/transform or return 502)
 
 ### Phase 4 — API Controller
-- [ ] Add POST /claims/{id}/summarize endpoint to ClaimsController
-  - [ ] Route: [HttpPost("{id}/summarize")]
-  - [ ] Signature: Task<ActionResult<ClaimSummary>> Summarize(string id)
-  - [ ] Return 200/404/502 as appropriate
+- [x] Add POST /claims/{id}/summarize endpoint to ClaimsController
+  - [x] Route: [HttpPost("{id}/summarize")]
+  - [x] Signature: ssync Task<ActionResult<ClaimSummary>> SummarizeClaimAsync(string id)
+  - [x] Return 200/404/502 as appropriate
 - [ ] Add request/response OpenAPI documentation (Swagger annotations)
 
 ### Phase 5 — Prompt & orchestration
