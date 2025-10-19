@@ -77,7 +77,7 @@ if ([string]::IsNullOrEmpty($existingApp)) {
       --environment $ENV_NAME `
       --image mcr.microsoft.com/azuredocs/aci-helloworld `
       --registry-server $ACR_REGISTRY_SERVER `
-      --target-port 80 `
+      --target-port 8080 `
       --ingress external `
       --min-replicas 1 `
       --max-replicas 1 `
