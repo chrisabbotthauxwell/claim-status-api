@@ -10,7 +10,7 @@ variables:
   acrServiceConnection: 'sc-acr-claimstatusapi-3' # ACR service connection name
   acrLoginServer: 'acrclaimstatusapicnalv2intro2b3.azurecr.io'
   armServiceConnection: 'sc-claimstatusapi-3' # Azure Resource Manager service connection name
-  resourceGroupName: 'rg-claimstatusapi-cnalv2-intro2b-3'
+  resourceGroupName: 'rg-cnalv2-introspect2b-test-3'
   containerAppName: 'claimstatusapi'
 
 resources:
