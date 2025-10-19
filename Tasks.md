@@ -135,7 +135,7 @@ Notes / Helpful hints
 - [x] Get code from repo and build image --> push image to ACR
 - [ ] Security/scan step: EITHER Push to ACR & run Defender for Containers to auto-scan image, OR use Defender for DevOps for IaC posture
 - [ ] Gate: fail pipeline if critical/high vulnerability found (policy)
-- [ ] Deploy ACA app 
+- [x] Deploy ACA app 
 - [ ] Deploy APIM configuration (Bicep/az cli)
 
 ## Configure APIM routes and policies
