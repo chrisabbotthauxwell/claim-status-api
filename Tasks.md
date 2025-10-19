@@ -137,21 +137,21 @@ Notes / Helpful hints
 - [ ] Gate: fail pipeline if critical/high vulnerability found (policy)
   - [x] Set image scan to WARN of critical/high vulnerabilities initially
 - [x] Deploy ACA app 
-- [ ] Deploy APIM configuration (Bicep/az cli)
+- [x] Deploy APIM configuration (Bicep/az cli)
 
 ## Configure APIM routes and policies
-- [ ] `GET /claims/{id}` --> returns claim status from Claim Status API endpoint, which returns claim status JSON from `claims.json` by `{id}`
-- [ ] `POST /claims/{id}/summarize` --> fetches mock notes for `{id}` from the Claim Status API endpoint, which  returns the multi-part summary by `{id}`
-- [ ] Apply APIM policy for rate limiting
-- [ ] Apply APIM policy for subscription key auth
+- [x] `GET /claims/{id}` --> returns claim status from Claim Status API endpoint, which returns claim status JSON from `claims.json` by `{id}`
+- [x] `POST /claims/{id}/summarize` --> fetches mock notes for `{id}` from the Claim Status API endpoint, which  returns the multi-part summary by `{id}`
+- [x] Apply APIM policy for rate limiting
+- [x] Apply APIM policy for subscription key auth
 
 ## Enable observability
-- [ ] APIM analytics + container insights into Log Analytics
+- [x] APIM analytics + container insights into Log Analytics
 - [ ] Save a couple of KQL queries for errors/latency
 
 ## Test endpoints via APIM
-- [ ] Call `GET /claims/{id}` to verify status response
-- [ ] Call `POST /claims/{id}/summarise` and confirm the response contains complete multi-part summary
+- [x] Call `GET /claims/{id}` to verify status response
+- [x] Call `POST /claims/{id}/summarise` and confirm the response contains complete multi-part summary
 - [ ] Inspect logs/latency in APIM analytics and Container Insights 
 
 ## Repository Structure

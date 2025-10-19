@@ -215,3 +215,26 @@ The following variables are defined for the Azure DevOps pipeline and applied to
 - OPENAI_MODEL (pipeline variable)
 - AZURE_OPENAI_ENDPOINT (pipeline secret)
 - AZURE_OPENAI_KEY (pipeline secret)
+
+## Azure API Management
+### Claims Status API service setup
+The Claims Status API is configured on API Managment by updating it with `claimstatusapi-swagger.json` retrieved from the Swagger UI.
+
+Run this command from the repo root to create the Claim Status API service:
+```
+.\iac\setup-apim.ps1
+```
+
+### Rate limiting policy
+A rate limiting policy is defined by `\apim\rate-imit-policy.xml` and applied to APIM to the number of calls from a given IP Address to 10 calls in a 60 minute window.
+
+Run this command from the repo root to apply to policy to API:
+```
+.\iac\apply-apim-policies.ps1
+```
+
+### Subscription key auth policy
+An `Ocp-Apim-Subscription-Key` header must be present with a valid subscription key value on each request. If this header is not present then the request will receive an `HTTP 401 Unauthorized` response.
+
+### Application Insights and Azure Monitor
+The current deployment model uses various `az cli` commands to deploy and configure Azure resources. However, there is currently no support for configuring these services for APIM in this way, so they must be enabled from the Azure Portal.
