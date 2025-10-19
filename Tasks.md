@@ -2,7 +2,7 @@
 This document details the steps and tasks required to complete the exercise, and will be used to track progress to completion.
 
 ## GenAI assisted tasks
-- [ ] **Functional:** generate customer-facing summaries and a longer adjuster version; produce “next-step” recommendation text for responses.
+- [x] **Functional:** generate customer-facing summaries and a longer adjuster version; produce “next-step” recommendation text for responses.
 - [ ] **DevOps:** auto-generate Azure DevOps pipeline YAML and mock claims.json/notes.json datasets.
 - [ ] **Security:** summarize Defender/scan outputs into prioritized remediation actions; generate APIM policy snippets for throttling & auth.
 - [ ] **Observability:** produce KQL queries for failing requests and high-latency traces; create plain-English incident digests.
@@ -16,7 +16,7 @@ This document details the steps and tasks required to complete the exercise, and
 - [x] Create `GET /claims/{id}` endpoint --> returns static claim JSON from `claims.json`
 - [x] Implement logging
 - [x] Generate `notes.json`
-- [ ] Create `POST /claims/{id}/summarize` endpoint --> reads mock notes for the id from `notes.json`, calls Azure OpenAI to generate multi-part summary for the claim using claim notes and claim details
+- [x] Create `POST /claims/{id}/summarize` endpoint --> reads mock notes for the id from `notes.json`, calls Azure OpenAI to generate multi-part summary for the claim using claim notes and claim details
     - Requires:
         - OpenAI deployment + chat completion endpoint
         - `notes.json` populated with mock claim notes
@@ -117,20 +117,20 @@ Notes / Helpful hints
 - Break the work into small PRs: Models+IClaimsService → ClaimsService notes load → OpenAI service → Controller + tests.
 
 ## Set up infrastricture
-- [ ] Create foundation powershell script to run `az cli` tasks
-- [ ] Create Resource Group
-- [ ] Create OpenAI resources: AI Foundry, GPT-4o
-- [ ] Create Container Registry & Container App
-- [ ] Create Log Analytics workspace
-- [ ] Create App Insights
-- [ ] Create APIM
+- [x] Create foundation powershell script to run `az cli` tasks
+- [x] Create Resource Group
+- [x] Create OpenAI resources: Azure OpenAI, gpt-4o-mini deployment
+- [x] Create Container Registry & Container App
+- [x] Create Log Analytics workspace
+- [x] Create App Insights
+- [x] Create APIM (Developer sku)
 
 ## Containerise the service
 - [x] Containerise the service --> Dockerfile
-- [ ] Push the image to ACR
+- [x] Test container locally
 
 ## CI/CD pipeline in Azure DevOps -- build & deploy flow:
-- [ ] Build image
+- [ ] Get code from repo and build image --> push image to ACR
 - [ ] Security/scan step: EITHER Push to ACR & run Defender for Containers to auto-scan image, OR use Defender for DevOps for IaC posture
 - [ ] Gate: fail pipeline if critical/high vulnerability found (policy)
 - [ ] Deploy ACA app and APIM configuration (Bicep/az cli)
@@ -151,21 +151,24 @@ Notes / Helpful hints
 - [ ] Inspect logs/latency in APIM analytics and Container Insights 
 
 ## Repository Structure
+```
 claim-status-api/
-├── src/                     # service source + Dockerfile
+├── src/                                # service source + Dockerfile
 │   ├── ClaimStatusAPI/
 │   │   ├── Controllers/
 │   │   ├── Models/
 │   │   ├── mocks/
-│   │   │   ├── claims.json  # 5–8 claim records
-│   │   │   └── notes.json   # 3–4 notes blobs
+│   │   │   ├── claims.json             # 5–8 claim records
+│   │   │   └── notes.json              # 3–4 notes blobs
 │   │   ├── Dockerfile
 │   │   └── ClaimStatusAPI.csproj
 │   └── ClaimStatusAPI.UnitTests/
-├── apim/                    # APIM policy files or export
-├── iac/                     # Bicep/Terraform/Az CLI templates
+│       └── ClaimStatusAPI.UnitTests.csproj
+├── apim/                               # APIM policy files or export
+├── iac/                                # Bicep/Terraform/Az CLI templates
 ├── pipelines/
-│   └── azure-pipelines.yml  # Azure DevOps pipeline
-├── scans/                   # link/screenshots to Defender findings
-├── observability/           # saved KQL queries and sample screenshots
-└── README.md                # instructions, GenAI prompts, how to run/tests
+│   └── azure-pipelines.yml             # Azure DevOps pipeline
+├── scans/                              # link/screenshots to Defender findings
+├── observability/                      # saved KQL queries and sample screenshots
+└── README.md                           # instructions, GenAI prompts, how to run/tests
+```
