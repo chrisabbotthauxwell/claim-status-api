@@ -47,29 +47,38 @@ steps:
         latest
 
   - task: AzureCLI@2
-    displayName: 'Deploy Docker image to ACA'
+    displayName: 'Set OpenAI secrets and deploy image to ACA'
+    env:
+      AZURE_OPENAI_KEY: $(AZURE_OPENAI_KEY)
+      AZURE_OPENAI_ENDPOINT: $(AZURE_OPENAI_ENDPOINT)
+      OPENAI_MODEL: $(OPENAI_MODEL)
     inputs:
       azureSubscription: '$(armServiceConnection)'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
       inlineScript: |
         set -euo pipefail
-        # write secrets (values are not logged)
+
+        # ensure containerapp extension is present
+        az extension show -n containerapp >/dev/null 2>&1 || az extension add --name containerapp
+
+        model="${OPENAI_MODEL:-gpt-4o-mini}"
+        echo "Using OPENAI_MODEL=$model"
+
+        # store secrets on the Container App (secret names must be lowercase/hyphen)
         az containerapp secret set \
           --name "$(containerAppName)" \
           --resource-group "$(resourceGroupName)" \
           --secrets azure-openai-key="$AZURE_OPENAI_KEY" azure-openai-endpoint="$AZURE_OPENAI_ENDPOINT"
-        # update env vars to reference secrets and set non-secret model
+
+        # set environment variables on the Container App; use @secret-name to reference stored secret
         az containerapp update \
           --name "$(containerAppName)" \
           --resource-group "$(resourceGroupName)" \
-          --env-vars AZURE_OPENAI_KEY='@azure-openai-key' AZURE_OPENAI_ENDPOINT='@azure-openai-endpoint' OPENAI_MODEL="$(OPENAI_MODEL)"
-        # finally update the image to trigger a new revision that will have the secrets/env available
+          --set-env-vars AZURE_OPENAI_KEY=@azure-openai-key AZURE_OPENAI_ENDPOINT=@azure-openai-endpoint OPENAI_MODEL=${model}
+
+        # update image (this triggers a restart so the new secrets/env take effect)
         az containerapp update \
           --name "$(containerAppName)" \
           --resource-group "$(resourceGroupName)" \
           --image "$(acrLoginServer)/$(imageRepository):$(tag)"
-    env:
-      AZURE_OPENAI_KEY: $(AZURE_OPENAI_KEY)
-      AZURE_OPENAI_ENDPOINT: $(AZURE_OPENAI_ENDPOINT)
-      OPENAI_MODEL: $(OPENAI_MODEL)
