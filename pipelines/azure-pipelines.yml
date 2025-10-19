@@ -58,12 +58,12 @@ steps:
         az containerapp secret set \
           --name "$(containerAppName)" \
           --resource-group "$(resourceGroupName)" \
-          --secrets AZURE_OPENAI_KEY="$AZURE_OPENAI_KEY" AZURE_OPENAI_ENDPOINT="$AZURE_OPENAI_ENDPOINT"
+          --secrets azure-openai-key="$AZURE_OPENAI_KEY" azure-openai-endpoint="$AZURE_OPENAI_ENDPOINT"
         # update env vars to reference secrets and set non-secret model
         az containerapp update \
           --name "$(containerAppName)" \
           --resource-group "$(resourceGroupName)" \
-          --env-vars AZURE_OPENAI_KEY='@AZURE_OPENAI_KEY' AZURE_OPENAI_ENDPOINT='@AZURE_OPENAI_ENDPOINT' OPENAI_MODEL="$(OPENAI_MODEL)"
+          --env-vars AZURE_OPENAI_KEY='@azure-openai-key' AZURE_OPENAI_ENDPOINT='@azure-openai-endpoint' OPENAI_MODEL="$(OPENAI_MODEL)"
         # finally update the image to trigger a new revision that will have the secrets/env available
         az containerapp update \
           --name "$(containerAppName)" \
