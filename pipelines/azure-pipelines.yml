@@ -9,6 +9,9 @@ variables:
   tag: '$(Build.BuildId)'
   acrServiceConnection: 'sc-acr-claimstatusapi-3' # ACR service connection name
   acrLoginServer: 'acrclaimstatusapicnalv2intro2b3.azurecr.io'
+  armServiceConnection: 'sc-claimstatusapi-3' # Azure Resource Manager service connection name
+  resourceGroupName: 'rg-claimstatusapi-cnalv2-intro2b-3'
+  containerAppName: 'claimstatusapi'
 
 resources:
   repositories:
@@ -21,17 +24,8 @@ resources:
 steps:
   - checkout: self
 
-#  - task: Docker@2
-#    displayName: 'Build Docker image'
-#    inputs:
-#      command: build
-#      Dockerfile: 'src/ClaimStatusAPI/Dockerfile'
-#      buildContext: 'src/ClaimStatusAPI'
-#      tags: |
-#        $(tag)
-
   - task: Docker@2
-    displayName: 'Build Docker Image'
+    displayName: 'Build Docker image'
     inputs:
       containerRegistry: '$(acrServiceConnection)'
       repository: '$(imageRepository)'
@@ -42,20 +36,6 @@ steps:
         $(tag)
         latest
 
-#  - task: Docker@2
-#    displayName: 'Login to ACR'
-#    inputs:
-#      command: login
-#      containerRegistry: '$(acrServiceConnection)' # ACR service connection name
-
-#  - task: Docker@2
-#    displayName: 'Push Docker image to ACR'
-#    inputs:
-#      command: push
-#      repository: '$(acrLoginServer)/$(imageRepository)'
-#      tags: |
-#        $(tag)
-
   - task: Docker@2
     displayName: 'Push Docker image to ACR'
     inputs:
@@ -65,3 +45,17 @@ steps:
       tags: |
         $(tag)
         latest
+
+  - task: AzureCLI@2
+    displayName: 'Deploy Docker image to ACA'
+    inputs:
+      azureSubscription: '$(armServiceConnection)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Deploying $(acrLoginServer)/$(imageRepository):$(tag) to $(containerAppName)"
+        # update container app to use the new image
+        az containerapp update \
+          --name "$(containerAppName)" \
+          --resource-group "$(resourceGroupName)" \
+          --image "$(acrLoginServer)/$(imageRepository):$(tag)"

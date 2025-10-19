@@ -132,10 +132,11 @@ Notes / Helpful hints
 
 ## CI/CD pipeline in Azure DevOps -- build & deploy flow:
 - [x] Create Azure DevOps service connection
-- [ ] Get code from repo and build image --> push image to ACR
+- [x] Get code from repo and build image --> push image to ACR
 - [ ] Security/scan step: EITHER Push to ACR & run Defender for Containers to auto-scan image, OR use Defender for DevOps for IaC posture
 - [ ] Gate: fail pipeline if critical/high vulnerability found (policy)
-- [ ] Deploy ACA app and APIM configuration (Bicep/az cli)
+- [ ] Deploy ACA app 
+- [ ] Deploy APIM configuration (Bicep/az cli)
 
 ## Configure APIM routes and policies
 - [ ] `GET /claims/{id}` --> returns claim status from Claim Status API endpoint, which returns claim status JSON from `claims.json` by `{id}`
