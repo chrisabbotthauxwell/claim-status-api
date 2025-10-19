@@ -1,0 +1,52 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+- group: claimstatusapi-infra-vars
+  imageName: 'claimstatusapi'
+  tag: '$(Build.BuildId)'
+  acrLoginServer: '$(ACR_REGISTRY_SERVER)' # Set as a variable in the claimstatusapi-infra-vars variable group
+
+resources:
+  repositories:
+    - repository: self
+      type: github
+      name: chrisabbotthauxwell/claim-status-api
+      ref: main
+      endpoint: 'sc-github-chrisabbotthauxwell' # Github service connection name
+
+steps:
+  - checkout: self
+
+  - task: Docker@2
+    displayName: 'Build Docker image'
+    inputs:
+      command: build
+      Dockerfile: 'src/ClaimStatusAPI/Dockerfile'
+      buildContext: 'src/ClaimStatusAPI'
+      tags: |
+        $(tag)
+
+  - task: Docker@2
+    displayName: 'Login to ACR'
+    inputs:
+      command: login
+      containerRegistry: 'sc-acr-claimstatusapi-3' # ACR service connection name
+
+  - task: Docker@2
+    displayName: 'Tag Docker image for ACR'
+    inputs:
+      command: tag
+      arguments: >
+        $(imageName):$(tag) $(acrLoginServer)/$(imageName):$(tag)
+
+  - task: Docker@2
+    displayName: 'Push Docker image to ACR'
+    inputs:
+      command: push
+      repository: '$(acrLoginServer)/$(imageName)'
+      tags: |
+        $(tag)

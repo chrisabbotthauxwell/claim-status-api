@@ -3,7 +3,7 @@ This document details the steps and tasks required to complete the exercise, and
 
 ## GenAI assisted tasks
 - [x] **Functional:** generate customer-facing summaries and a longer adjuster version; produce “next-step” recommendation text for responses.
-- [ ] **DevOps:** auto-generate Azure DevOps pipeline YAML and mock claims.json/notes.json datasets.
+- [x] **DevOps:** auto-generate Azure DevOps pipeline YAML and mock claims.json/notes.json datasets.
 - [ ] **Security:** summarize Defender/scan outputs into prioritized remediation actions; generate APIM policy snippets for throttling & auth.
 - [ ] **Observability:** produce KQL queries for failing requests and high-latency traces; create plain-English incident digests.
 - [ ] **Documentation:** auto-generate API reference from routes and draft a short ADR (“Adopt APIM as gateway for claims summarization”).
@@ -30,6 +30,7 @@ This document details the steps and tasks required to complete the exercise, and
     "nextStep": "..."
 }
 ```
+ - [ ] Refactor or replace IOpenAiService with interface using primitive types
 
 ## POST /claims/{id}/summarize — Master checklist
 
@@ -130,6 +131,7 @@ Notes / Helpful hints
 - [x] Test container locally
 
 ## CI/CD pipeline in Azure DevOps -- build & deploy flow:
+- [x] Create Azure DevOps service connection
 - [ ] Get code from repo and build image --> push image to ACR
 - [ ] Security/scan step: EITHER Push to ACR & run Defender for Containers to auto-scan image, OR use Defender for DevOps for IaC posture
 - [ ] Gate: fail pipeline if critical/high vulnerability found (policy)
