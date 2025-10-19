@@ -5,10 +5,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-- group: claimstatusapi-infra-vars
   imageName: 'claimstatusapi'
   tag: '$(Build.BuildId)'
-  acrLoginServer: '$(ACR_REGISTRY_SERVER)' # Set as a variable in the claimstatusapi-infra-vars variable group
+  acrLoginServer: 'acrclaimstatusapicnalv2intro2b3.azurecr.io'
 
 resources:
   repositories:
