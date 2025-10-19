@@ -144,6 +144,9 @@ dotnet user-secrets list
 docker run --rm -e ASPNETCORE_ENVIRONMENT=Development -e AZURE_OPENAI_ENDPOINT="https://..." -e AZURE_OPENAI_KEY="..." -e OPENAI_MODEL="gpt-4o-mini" -p 5017:80 claimstatusapi:0.1.0
 ```
 - In CI/pipeline, store values in secret variables and inject as env vars during build/release.
+      - OPENAI_MODEL (pipeline variable)
+      - AZURE_OPENAI_ENDPOINT (pipeline secret)
+      - AZURE_OPENAI_KEY (pipeline secret)
 
 ### 3) Production — Azure Key Vault + Managed Identity (best practice)
 - Store production secrets in Azure Key Vault and give the container app a managed identity.
@@ -206,3 +209,9 @@ A Github service connection 'sc-github-chrisabbotthauxwell` is created using OAu
 
 ### Azure Container Registry service connection
 An Docker Registry service connection `sc-acr-claimstatusai-3` is created to connect the Azure DevOps Project to the ACR resource.
+
+### Pipeline variables
+The following variables are defined for the Azure DevOps pipeline and applied to the Container App during the deployment of the image:
+- OPENAI_MODEL (pipeline variable)
+- AZURE_OPENAI_ENDPOINT (pipeline secret)
+- AZURE_OPENAI_KEY (pipeline secret)

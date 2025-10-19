@@ -46,6 +46,40 @@ steps:
         $(tag)
         latest
 
+  # Scan image with Trivy and fail on HIGH/CRITICAL
+  - script: |
+      set -euo pipefail
+      echo "Scanning image $(acrLoginServer)/$(imageRepository):$(tag) with Trivy (JSON output)"
+      # ensure working dir is mounted so container can write output
+      docker run --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v "$(System.DefaultWorkingDirectory):/work" \
+        aquasec/trivy:latest \
+        image --format json -o /work/trivy-result.json --severity HIGH,CRITICAL "$(acrLoginServer)/$(imageRepository):$(tag)"
+
+      # count HIGH/CRITICAL vulns
+      vuln_count=$(jq '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' trivy-result.json)
+
+      if [ "$vuln_count" -gt 0 ]; then
+        echo "Found $vuln_count HIGH/CRITICAL vulnerabilities"
+        # collect first few vuln ids/messages for failure message
+        details=$(jq -r '[.Results[].Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL") | {pkg:.PkgName, vuln:.VulnerabilityID, severity:.Severity}] | .[:5]' trivy-result.json | jq -c .)
+        printf '<?xml version="1.0" encoding="UTF-8"?>\n<testsuites>\n  <testsuite name="TrivyScan" tests="1" failures="1">\n    <testcase classname="Trivy" name="HighOrCriticalVulnerabilities">\n      <failure message="%s">%</failure>\n    </testcase>\n  </testsuite>\n</testsuites>\n' "$vuln_count" > trivy-junit.xml
+      else
+        echo "No HIGH/CRITICAL vulnerabilities found"
+        printf '<?xml version="1.0" encoding="UTF-8"?>\n<testsuites>\n  <testsuite name="TrivyScan" tests="1" failures="0">\n    <testcase classname="Trivy" name="NoHighOrCriticalVulnerabilities"/>\n  </testsuite>\n</testsuites>\n' > trivy-junit.xml
+      fi
+    displayName: 'Scan image (Trivy) -> produce JSON + JUnit'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Trivy scan results (JUnit)'
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '$(System.DefaultWorkingDirectory)/trivy-junit.xml'
+      failTaskOnFailedTests: true
+      testRunTitle: 'Trivy vulnerability scan'
+
   - task: AzureCLI@2
     displayName: 'Set OpenAI secrets and deploy image to ACA'
     env:
