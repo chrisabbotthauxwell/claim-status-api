@@ -104,6 +104,7 @@ steps:
       azureSubscription: '$(armServiceConnection)'
       scriptType: 'bash'
       scriptLocation: 'inlineScript'
+      workingDirectory: '$(System.DefaultWorkingDirectory)'
       inlineScript: |
         set -euo pipefail
         
@@ -188,8 +189,6 @@ steps:
         if echo "$response" | jq -e '.error' > /dev/null; then
           echo "##[warning]OpenAI API Error: $(echo "$response" | jq -r '.error.message // "Unknown error"')"
         fi
-        
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   - task: AzureCLI@2
     displayName: 'Set OpenAI secrets and deploy image to ACA'
