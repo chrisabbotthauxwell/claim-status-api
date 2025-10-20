@@ -4,7 +4,7 @@ This document details the steps and tasks required to complete the exercise, and
 ## GenAI assisted tasks
 - [x] **Functional:** generate customer-facing summaries and a longer adjuster version; produce “next-step” recommendation text for responses.
 - [x] **DevOps:** auto-generate Azure DevOps pipeline YAML and mock claims.json/notes.json datasets.
-- [ ] **Security:** summarize Defender/scan outputs into prioritized remediation actions; generate APIM policy snippets for throttling & auth.
+- [x] **Security:** summarize Defender/scan outputs into prioritized remediation actions; generate APIM policy snippets for throttling & auth.
 - [ ] **Observability:** produce KQL queries for failing requests and high-latency traces; create plain-English incident digests.
 - [ ] **Documentation:** auto-generate API reference from routes and draft a short ADR (“Adopt APIM as gateway for claims summarization”).
 
@@ -95,8 +95,8 @@ Use this master checklist to track work required to implement the POST /claims/{
 - [x] Ensure notes.json is included in csproj publish output
 - [x] Update Dockerfile if required (publish contains mocks)
 - [ ] Add CI step (pipeline) to run unit tests
-- [ ] Add CI step to build image and push to registry (ACR) — include image scan step later
-- [ ] Add environment variable wiring for Azure secrets in deployment scripts / Bicep
+- [x] Add CI step to build image and push to registry (ACR) — include image scan step later
+- [x] Add environment variable wiring for Azure secrets in deployment scripts / Bicep
 
 ### Phase 9 — Observability & Ops
 - [x] Add structured logging for prompt, request id, model response status (avoid logging secrets)
@@ -133,7 +133,7 @@ Notes / Helpful hints
 ## CI/CD pipeline in Azure DevOps -- build & deploy flow:
 - [x] Create Azure DevOps service connection
 - [x] Get code from repo and build image --> push image to ACR
-- [ ] Security/scan step: EITHER Push to ACR & run Defender for Containers to auto-scan image, OR use Defender for DevOps for IaC posture
+- [x] Security/scan step: EITHER Push to ACR & run Defender for Containers to auto-scan image, OR use Defender for DevOps for IaC posture
 - [ ] Gate: fail pipeline if critical/high vulnerability found (policy)
   - [x] Set image scan to WARN of critical/high vulnerabilities initially
 - [x] Deploy ACA app 

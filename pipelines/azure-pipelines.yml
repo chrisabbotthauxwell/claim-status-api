@@ -46,25 +46,6 @@ steps:
         $(tag)
         latest
 
-  # Scan image with Trivy and fail on HIGH/CRITICAL (failure disabled)
-  - script: |
-      set -euo pipefail
-      echo "Scanning $(acrLoginServer)/$(imageRepository):$(tag) for HIGH/CRITICAL vulnerabilities"
-      
-      # Run Trivy with table output (easier to read) and don't exit on findings
-      docker run --rm \
-        -v /var/run/docker.sock:/var/run/docker.sock \
-        aquasec/trivy:latest \
-        image --severity HIGH,CRITICAL --format table \
-        "$(acrLoginServer)/$(imageRepository):$(tag)" || true
-      
-      echo ""
-      echo "##[warning]Vulnerability scan completed. Review findings above."
-      echo "##[warning]Pipeline continues despite HIGH/CRITICAL vulnerabilities (warning mode)."
-        
-    displayName: 'Vulnerability scan (warn on HIGH/CRITICAL)'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-
   # Enhanced Trivy scan with JSON output for AI processing
   - script: |
       set -euo pipefail
