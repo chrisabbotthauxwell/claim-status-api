@@ -65,6 +65,132 @@ steps:
     displayName: 'Vulnerability scan (warn on HIGH/CRITICAL)'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
+  # Enhanced Trivy scan with JSON output for AI processing
+  - script: |
+      set -euo pipefail
+      echo "Scanning $(acrLoginServer)/$(imageRepository):$(tag) for HIGH/CRITICAL vulnerabilities"
+      
+      # Run Trivy with JSON output for AI processing
+      docker run --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v "$(System.DefaultWorkingDirectory):/work" \
+        aquasec/trivy:latest \
+        image --format json -o /work/trivy-results.json \
+        --severity HIGH,CRITICAL \
+        "$(acrLoginServer)/$(imageRepository):$(tag)" || true
+      
+      # Also show table format for human readability
+      docker run --rm \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        aquasec/trivy:latest \
+        image --severity HIGH,CRITICAL --format table \
+        "$(acrLoginServer)/$(imageRepository):$(tag)" || true
+      
+      echo ""
+      echo "##[warning]Vulnerability scan completed. Review findings above."
+        
+    displayName: 'Vulnerability scan with JSON output'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
+  # AI-powered vulnerability remediation suggestions
+  - task: AzureCLI@2
+    displayName: 'Get AI remediation suggestions for vulnerabilities'
+    condition: always() # Run even if previous steps had warnings
+    env:
+      AZURE_OPENAI_KEY: $(AZURE_OPENAI_KEY)
+      AZURE_OPENAI_ENDPOINT: $(AZURE_OPENAI_ENDPOINT)
+      OPENAI_MODEL: $(OPENAI_MODEL)
+    inputs:
+      azureSubscription: '$(armServiceConnection)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        set -euo pipefail
+        
+        model="${OPENAI_MODEL:-gpt-4o-mini}"
+        
+        # Check if vulnerability results exist
+        if [ ! -f "trivy-results.json" ]; then
+          echo "No Trivy results found, skipping AI analysis"
+          exit 0
+        fi
+        
+        # Extract HIGH/CRITICAL vulnerabilities
+        vuln_count=$(jq '[.Results[]?.Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL")] | length' trivy-results.json)
+        
+        if [ "$vuln_count" -eq 0 ]; then
+          echo "No HIGH/CRITICAL vulnerabilities found, skipping AI analysis"
+          exit 0
+        fi
+        
+        echo "Found $vuln_count HIGH/CRITICAL vulnerabilities, requesting AI remediation suggestions..."
+        
+        # Extract vulnerability summary for AI analysis
+        vuln_summary=$(jq -r '
+          [.Results[]?.Vulnerabilities[]? | select(.Severity=="HIGH" or .Severity=="CRITICAL") | 
+          {
+            VulnerabilityID: .VulnerabilityID,
+            PkgName: .PkgName,
+            InstalledVersion: .InstalledVersion,
+            FixedVersion: .FixedVersion,
+            Severity: .Severity,
+            Title: .Title,
+            Description: .Description
+          }] | .[:10] # Limit to first 10 for token efficiency
+        ' trivy-results.json)
+        
+        # Create the prompt for OpenAI
+        prompt="You are a security expert. I have a .NET 8 containerized application with the following vulnerabilities detected by Trivy. Please provide specific, actionable remediation steps:
+
+        Container Image: $(acrLoginServer)/$(imageRepository):$(tag)
+        Base Image: mcr.microsoft.com/dotnet/aspnet:8.0
+        
+        Vulnerabilities:
+        $vuln_summary
+        
+        Please provide:
+        1. Priority order for fixing these vulnerabilities
+        2. Specific remediation steps (package updates, base image changes, etc.)
+        3. Any Dockerfile modifications needed
+        4. Alternative approaches if direct fixes aren't available
+        
+        Keep the response concise and actionable for a CI/CD pipeline context."
+        
+        # Call Azure OpenAI API
+        response=$(curl -s -X POST "$AZURE_OPENAI_ENDPOINT/openai/deployments/$model/chat/completions?api-version=2024-08-01-preview" \
+          -H "Content-Type: application/json" \
+          -H "api-key: $AZURE_OPENAI_KEY" \
+          -d "{
+            \"messages\": [
+              {
+                \"role\": \"user\",
+                \"content\": $(echo "$prompt" | jq -R -s .)
+              }
+            ],
+            \"max_tokens\": 1500,
+            \"temperature\": 0.3
+          }")
+        
+        # Extract and display the AI response
+        ai_suggestion=$(echo "$response" | jq -r '.choices[0].message.content // "No response received"')
+        
+        echo ""
+        echo "=============================================================================="
+        echo " AI-POWERED VULNERABILITY REMEDIATION SUGGESTIONS"
+        echo "=============================================================================="
+        echo "$ai_suggestion"
+        echo "=============================================================================="
+        
+        # Also save to artifact for later reference
+        echo "$ai_suggestion" > ai-remediation-suggestions.txt
+        
+        # Check for API errors
+        if echo "$response" | jq -e '.error' > /dev/null; then
+          echo "##[warning]OpenAI API Error: $(echo "$response" | jq -r '.error.message // "Unknown error"')"
+        fi
+        
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
   - task: AzureCLI@2
     displayName: 'Set OpenAI secrets and deploy image to ACA'
     env:
