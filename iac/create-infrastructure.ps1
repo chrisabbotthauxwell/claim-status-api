@@ -53,7 +53,7 @@ $APP_INSIGHTS_CONNECTION_STRING = az monitor app-insights component show `
 $envExists = az containerapp env show --name $ENV_NAME --resource-group $RESOURCE_GROUP --query name --output tsv 2>$null
 if ([string]::IsNullOrEmpty($envExists)) {
     Write-Host "Creating Container Apps Environment $ENV_NAME."
-    az containerapp env create --name $ENV_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --logs-workspace-id $LOG_ANALYTICS_WORKSPACE_ID --dapr-connection-string $APP_INSIGHTS_CONNECTION_STRING
+    az containerapp env create --name $ENV_NAME --resource-group $RESOURCE_GROUP --location $LOCATION --logs-workspace-id $LOG_ANALYTICS_WORKSPACE_ID
     Write-Host "Container Apps Environment $ENV_NAME created."
 } else {
     Write-Host "Container Apps Environment $ENV_NAME already exists. Updating existing environment."

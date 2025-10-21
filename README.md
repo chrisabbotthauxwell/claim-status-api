@@ -9,6 +9,9 @@ A Claim Status API for an academic exercise
 - Infrastructure deployment: Powershell and Az CLI
 - Application CI build & deploy pipelines: Azure DevOps
 
+## Development approach
+- Test Driven Development (TDD)
+
 ## Service description
 ### Get claim by id
 - Returns a static claim json object populated from claim details in `claims.json` by id
@@ -49,7 +52,7 @@ A Claim Status API for an academic exercise
 ### Request claim summary
 - Reads claim details in `claims.json` by id
 - Reads claim notes in `notes.json` by id
-- Submits all claim information to OpenAI
+- Submits all claim information to OpenAI for summarisation
 - Returns a claim summary json object containing `summary`, `customerSummary`, `adjusterSummary` and `nextSteps` sections.
 
 #### Request
@@ -71,28 +74,46 @@ A Claim Status API for an academic exercise
 }
 ```
 
-## Development approach
-- Test Driven Development (TDD)
+### Auto-generated API reference
+> A GenAI-generated API reference can be seen in [auto-generated-api-reference.md](documentation/auto-generated-api-reference.md)
 
 ## Repository structure
 ```
+
 claim-status-api/
-├── src/                            # service source + Dockerfile
-│   └── ClaimStatusAPI/
-│       ├── Controllers/
-│       ├── Models/
-│       ├── mocks/
-│       │   ├── claims.json         # 5–8 claim records
-│       │   └── notes.json          # 3–4 notes blobs
-│       ├── Dockerfile
-│       └── ClaimStatusAPI.csproj
-├── apim/                           # APIM policy files or export
-├── iac/                            # Bicep/Terraform/Az CLI templates
+├── src/                                    # service source + Dockerfile
+│   ├── ClaimStatusAPI/                     # Claim Status API project folder
+│   │   ├── Controllers/
+│   │   ├── Models/
+│   │   ├── mocks/
+│   │   │   ├── claims.json                 # 5x claim records
+│   │   │   └── notes.json                  # 5x notes blobs
+│   │   ├── Dockerfile                      # Dockerfile for Claim Status API
+│   │   └── ClaimStatusAPI.csproj
+│   └── ClaimStatusAPI.UnitTests            # Claim Status API unit tests project folder
+│       └── ClaimStatusAPI.UnitTests.csproj
+├── apim/                                   # APIM policy files or export
+│   ├── claimstatusapi-swagger.json         # OpenAPI json for APIM deployment
+│   └── rate-limit-policy.xml               # APIM rate limit policy definition
+├── documentation/                          # auto-generated docs and references
+│   ├── auto-generated-adr.md               # Architectural Decision Records
+│   └── auto-generated-api-reference.md     # API reference
+├── iac/                                    # Az CLI templates
+│   ├── provisioned-azure-services.md       # The deployed services
+│   ├── create-apim.ps1                     # Deploy APIM instance
+│   ├── create-infrastructure.ps1           # Provision core Azure infrastructure
+│   ├── setup-apim.ps1                      # Import API spec and configure APIM
+│   └── variables.ps1                       # Deployment variables
 ├── pipelines/
-│   └── azure-pipelines.yml         # Azure DevOps pipeline
-├── scans/                          # link/screenshots to Defender findings
-├── observability/                  # saved KQL queries and sample screenshots
-├── README.md                       # instructions, GenAI prompts, how to run/tests
+│   ├── azure-pipelines.yml                 # Azure DevOps pipeline
+│   └── pipeline-run-complete.md            # Details of pipeline execution
+├── scans/                                  # link/screenshots to Defender findings
+│   └── security-scans.md                   # Details of security scans
+├── observability/                          # saved KQL queries and sample screenshots
+│   ├── end-to-end-correlated-traces.md     # Observed traces and KQL queries
+│   ├── failure-responses.md                # Observed failed requests and KQL queries
+│   └── high-latency-traces.md              # Observed high-latency requests and KQL queries
+├── README.md
 └── claim-status-api.sln
 ```
 ## Running locally
@@ -123,7 +144,7 @@ docker run --rm -e ASPNETCORE_ENVIRONMENT=Development -e AZURE_OPENAI_ENDPOINT="
 
 This project uses secrets for Azure OpenAI (endpoint, key, model). Follow the guidance below — never commit secrets to source control.
 
-### 1) Local development - dotnet user-secrets
+### 1. Local development - dotnet user-secrets
 Required when running the application as a local HTTP service.
 - Initialize user-secrets (run in the API project folder):
 ```powershell
@@ -138,24 +159,24 @@ dotnet user-secrets set "AzureOpenAI:Model" "gpt-4o-mini"
 dotnet user-secrets list
 ```
 
-### 2) Container local / CI — Environment variables (for containers / pipelines)
+### 2. Container local - Environment variables
 - Provide secrets as environment variables when running locally with Docker:
 ```bash
 docker run --rm -e ASPNETCORE_ENVIRONMENT=Development -e AZURE_OPENAI_ENDPOINT="https://..." -e AZURE_OPENAI_KEY="..." -e OPENAI_MODEL="gpt-4o-mini" -p 5017:80 claimstatusapi:0.1.0
 ```
-- In CI/pipeline, store values in secret variables and inject as env vars during build/release.
-      - OPENAI_MODEL (pipeline variable)
-      - AZURE_OPENAI_ENDPOINT (pipeline secret)
-      - AZURE_OPENAI_KEY (pipeline secret)
 
-### 3) Production — Azure Key Vault + Managed Identity (best practice)
+### 3. CI pipeline - Environment variables
+- Provide secrets as pipeline secret variables
+
+> See [pipeline-run-complete.md](pipelines/pipeline-run-complete.md) for details of CI pipeline variable and successful pipeline execution.
+
+### 4. Production (Future State) - Azure Key Vault + Managed Identity (best practice)
 - Store production secrets in Azure Key Vault and give the container app a managed identity.
 - Use Azure Key Vault configuration provider to load secrets into IConfiguration:
 ```csharp
 // Requires Azure.Extensions.AspNetCore.Configuration.Secrets and Azure.Identity
 builder.Configuration.AddAzureKeyVault(new Uri("https://<your-vault>.vault.azure.net/"), new DefaultAzureCredential());
 ```
-- Advantages: centralized rotation, RBAC, audit logs, no secrets in app/container.
 
 ## Running unit tests
 - Restore packages
@@ -174,6 +195,8 @@ dotnet test src/ClaimStatusAPI.UnitTests/ClaimStatusAPI.UnitTests.csproj
 ## Infrastructure
 Infrastructure provision is handled using `Powershell` scrips in the `/iac/` folder which are run from the command line in the solution root.
 
+> Details of the services that were provisioned in Azure can be seen in [provisioned-azure-services.md](/iac/provisioned-azure-services.md)
+
 ### Deployment variables
 `.\iac\variables.ps1` defines deployment variables for the deployment.
 
@@ -184,7 +207,17 @@ From the solution root folder in a Powershell terminal, run:
 ```bash
 .\iac\create-infrastrcuture.ps1
 ```
-This will create all required Azure services ready for app deployment, except an Azure API Management service.
+This will create all required Azure services ready for app deployment, except an Azure API Management service:
+
+|Resource|Notes|
+|--|--|
+|Resource group||
+|Container Registry||
+|Log Analytics Workspace||
+|Application Insights||
+|Container Apps Environment|OpenTelemetry collection enabled<br/>Integrated with App Insights|
+|Container App|Initialised with stock image<br/>Integrated with App Insights<br/>Mapped to Container Registry
+|Azure OpenAI|gpt-4o-mini deployed|
 
 ### Deploy API Management
 APIM creation is kept as a separate script to avoid:
@@ -195,46 +228,110 @@ From the solution root folder in a Powershell terminal, run:
 ```bash
 .\iac\create-apim.ps1
 ```
+This will create an APIM resource at the Developer tier:
+
+|Resource|Notes|
+|--|--|
+|API Management|Developer tier sku|
+
+### Setup API Management
+#### Claims Status API service setup
+The Claims Status API is configured on API Managment by updating it with `claimstatusapi-swagger.json` downloaded from the swagger UI when running the service:
+```
+http://localhost:5017/swagger/v1/swagger.json
+```
+
+Run this command from the repo root to create the Claim Status API service:
+```
+.\iac\setup-apim.ps1
+```
+The Claim Status API endpoints will be available via APIM:
+|Endpoint|APIM URL|
+|--|--|
+|GET /claims/{id}|https://[apim-name].azure-api.net/v1/Claims/{id}|
+|POST /claims/{id}/summarize|https://[apim-name].azure-api.net/v1/Claims/{id}/summarize|
+
+#### Rate limiting policy
+A rate limiting policy is defined by `\apim\rate-imit-policy.xml` and applied to APIM to limit the number of calls from a given IP Address to 10 calls in a 60 minute window.
+
+The rate limiting policy cannot be applied to APIM via the `az cli`. Instead the policy must be applied manually, or by using the [VS Code API Management Extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-apimanagement).
+
+Using the APIM Extension, the policy configuration content can be copied from `\apim\rate-imit-policy.xml` and applied to the  `<inbound>` node of the `<policies>` definition XML for the API:
+```xml
+<policies>
+	<inbound>
+		<base />
+		<rate-limit-by-key calls="10" renewal-period="60" increment-condition="@(context.Response.StatusCode == 200)" counter-key="@(context.Request.IpAddress)" remaining-calls-variable-name="remainingCallsPerIP" />
+	</inbound>
+	<backend>
+		<base />
+	</backend>
+	<outbound>
+		<base />
+	</outbound>
+	<on-error>
+		<base />
+	</on-error>
+</policies>
+```
+Updating and saving this file will update APIM in Azure:
+```bash
+Opening "apimanagement-claimstatusapi-3-claimstatusapi-tempFile.policy.xml"...
+Session working folder:5cbe6862e1
+Opening "apimanagement-claimstatusapi-3-claimstatusapi-tempFile.policy.xml"...
+Updating "apimanagement-claimstatusapi-3-claimstatusapi-tempFile.policy.xml" ...
+Updated "apimanagement-claimstatusapi-3-claimstatusapi-tempFile.policy.xml".
+```
+Exceeding the rate limit will return an `HTTP 429 Too Many Requests` error response:
+
+```json
+{
+    "statusCode": 429,
+    "message": "Rate limit is exceeded. Try again in 50 seconds."
+}
+```
+
+#### Subscription key auth policy
+The policy cannot be applied to APIM via the `az cli` and is enabled by default by APIM.
+
+An `Ocp-Apim-Subscription-Key` header must be present with a valid subscription key value on each request. If this header is not present then the request will receive an `HTTP 401 Unauthorized` response:
+
+```json
+{
+    "statusCode": 401,
+    "message": "Access denied due to a missing application credentials or subscription key. Make sure to include an application token or a subscription key when making requests to the API."
+}
+```
+
+#### Application Insights, Azure Monitor and trace correlation
+APIM cannot be configured for Application Insights and Azure Monitor via `az cli`. This must  be enabled from the Azure Portal in the APIM > APIs > API > Settings section for the deployed API.
+
+Setting the `Correlation protocol` to `W3C` for APIM App Insights enables end-to-end tracing via OpenTelemetry OperationId correlation:
+
+|Component|Configuration|
+|--|--|
+|APIM|App Insights correlation protocol set to W3C<br/>Sampling set to 100% to capture all traces|
+|Container Apps Environment|Sends OpenTelemetry Logs and Traces to Application Insights|
+|Container App|Sends application telemetry to Application Insights|
+|Application logging|Sends ILogger telemetry to Application Insights<br/>Sends OpenTelemetry application data to Application Insights|
+
+> Examples of successful trace observability can be seen in [end-to-end-correlated-traces.md](observability/end-to-end-correlated-traces.md)
+
+> Examples of failure response observability can be seen in [failure-responses.md](observability/failure-responses.md)
 
 ## Azure DevOps
 
 ### Organisation and project
 Azure DevOps is used to create an Organisation and a Project to manage CI pipelines.
 
-### Azure Resource Manager service connection
-An ARM service connection `sc-claimstatusapi-3` is created to connect the Azure DevOps Project to the Azure resource group where the infrastructure is deployed.
+### Service connections
+The necessary service connections are configured in Azure DevOps to enable connectivity from the DevOps pipeline to Azure resources:
 
-### Github service connection
-A Github service connection 'sc-github-chrisabbotthauxwell` is created using OAuth to connect the Azure DevOps Project to the Github repo.
+|Connection type|Service connection name|Description|Identity type|
+|--|--|--|--|
+|ARM service connection|`sc-claimstatusapi-3`|Connection to the Azure Resource Group where infrastructure is deployed|Managed identity|
+|Github service connection|`sc-github-chrisabbotthauxwell`|Connection to the Github source code repo|OAuth|
+|Docker Registry service connection|`sc-acr-claimstatusai-3`|Connection to Azure ACR|Managed identity|
 
-### Azure Container Registry service connection
-An Docker Registry service connection `sc-acr-claimstatusai-3` is created to connect the Azure DevOps Project to the ACR resource.
-
-### Pipeline variables
-The following variables are defined for the Azure DevOps pipeline and applied to the Container App during the deployment of the image:
-- OPENAI_MODEL (pipeline variable)
-- AZURE_OPENAI_ENDPOINT (pipeline secret)
-- AZURE_OPENAI_KEY (pipeline secret)
-
-## Azure API Management
-### Claims Status API service setup
-The Claims Status API is configured on API Managment by updating it with `claimstatusapi-swagger.json` retrieved from the Swagger UI.
-
-Run this command from the repo root to create the Claim Status API service:
-```
-.\iac\setup-apim.ps1
-```
-
-### Rate limiting policy
-A rate limiting policy is defined by `\apim\rate-imit-policy.xml` and applied to APIM to the number of calls from a given IP Address to 10 calls in a 60 minute window.
-
-Run this command from the repo root to apply to policy to API:
-```
-.\iac\apply-apim-policies.ps1
-```
-
-### Subscription key auth policy
-An `Ocp-Apim-Subscription-Key` header must be present with a valid subscription key value on each request. If this header is not present then the request will receive an `HTTP 401 Unauthorized` response.
-
-### Application Insights and Azure Monitor
-The current deployment model uses various `az cli` commands to deploy and configure Azure resources. However, there is currently no support for configuring these services for APIM in this way, so they must be enabled from the Azure Portal.
+### Pipeline definition
+> Details of the pipeline definition and examples of successful execution can be found in [pipeline-run-complete.md](pipelines/pipeline-run-complete.md).

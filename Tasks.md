@@ -5,8 +5,8 @@ This document details the steps and tasks required to complete the exercise, and
 - [x] **Functional:** generate customer-facing summaries and a longer adjuster version; produce “next-step” recommendation text for responses.
 - [x] **DevOps:** auto-generate Azure DevOps pipeline YAML and mock claims.json/notes.json datasets.
 - [x] **Security:** summarize Defender/scan outputs into prioritized remediation actions; generate APIM policy snippets for throttling & auth.
-- [ ] **Observability:** produce KQL queries for failing requests and high-latency traces; create plain-English incident digests.
-- [ ] **Documentation:** auto-generate API reference from routes and draft a short ADR (“Adopt APIM as gateway for claims summarization”).
+- [x] **Observability:** produce KQL queries for failing requests and high-latency traces; create plain-English incident digests.
+- [x] **Documentation:** auto-generate API reference from routes and draft a short ADR (“Adopt APIM as gateway for claims summarization”).
 
 ## Implement Claim Status API
 - [x] Skeleton folder set up
@@ -80,7 +80,7 @@ Use this master checklist to track work required to implement the POST /claims/{
 ### Phase 6 — Resilience & security
 - [ ] Add HTTP client timeout + retries (Polly) around OpenAI calls
 - [ ] Validate and sanitize inputs (id param)
-- [ ] Rate-limit or throttle summarization endpoint (APIM or in-app)
+- [x] Rate-limit or throttle summarization endpoint (APIM or in-app)
 - [x] Ensure secrets are never checked into repo; use env vars or user-secrets locally
 
 ### Phase 7 — Tests
@@ -101,7 +101,7 @@ Use this master checklist to track work required to implement the POST /claims/{
 ### Phase 9 — Observability & Ops
 - [x] Add structured logging for prompt, request id, model response status (avoid logging secrets)
 - [ ] Add metrics: request latency, OpenAI call success/failure, token usage (if available)
-- [ ] Create KQL snippets for errors and high-latency traces
+- [x] Create KQL snippets for errors and high-latency traces
 
 ### Phase 10 — Documentation & handover
 - [x] Update README with local dev steps and secret setup
@@ -153,26 +153,3 @@ Notes / Helpful hints
 - [x] Call `GET /claims/{id}` to verify status response
 - [x] Call `POST /claims/{id}/summarise` and confirm the response contains complete multi-part summary
 - [ ] Inspect logs/latency in APIM analytics and Container Insights 
-
-## Repository Structure
-```
-claim-status-api/
-├── src/                                # service source + Dockerfile
-│   ├── ClaimStatusAPI/
-│   │   ├── Controllers/
-│   │   ├── Models/
-│   │   ├── mocks/
-│   │   │   ├── claims.json             # 5–8 claim records
-│   │   │   └── notes.json              # 3–4 notes blobs
-│   │   ├── Dockerfile
-│   │   └── ClaimStatusAPI.csproj
-│   └── ClaimStatusAPI.UnitTests/
-│       └── ClaimStatusAPI.UnitTests.csproj
-├── apim/                               # APIM policy files or export
-├── iac/                                # Bicep/Terraform/Az CLI templates
-├── pipelines/
-│   └── azure-pipelines.yml             # Azure DevOps pipeline
-├── scans/                              # link/screenshots to Defender findings
-├── observability/                      # saved KQL queries and sample screenshots
-└── README.md                           # instructions, GenAI prompts, how to run/tests
-```
