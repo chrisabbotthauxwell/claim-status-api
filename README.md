@@ -11,6 +11,7 @@ A Claim Status API for an academic exercise
 
 ## Development approach
 - Test Driven Development (TDD)
+- Spec Driven Development (define a list of tasks in [Tasks.md](Tasks.md) and use GenAI assistance to complete them)
 
 ## Service description
 ### Get claim by id
