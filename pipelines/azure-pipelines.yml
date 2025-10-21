@@ -24,6 +24,13 @@ resources:
 steps:
   - checkout: self
 
+  - task: DotNetCoreCLI@2
+    displayName: 'Run unit tests'
+    inputs:
+      command: 'test'
+      projects: 'src/ClaimStatusAPI.UnitTests/ClaimStatusAPI.UnitTests.csproj'
+      arguments: '--configuration Release --no-build'
+
   - task: Docker@2
     displayName: 'Build Docker image'
     inputs:
@@ -70,7 +77,7 @@ steps:
       echo ""
       echo "##[warning]Vulnerability scan completed. Review findings above."
         
-    displayName: 'Vulnerability scan with JSON output'
+    displayName: 'Docker image Vulnerability scan'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 
   # AI-powered vulnerability remediation suggestions
@@ -172,7 +179,7 @@ steps:
         fi
 
   - task: AzureCLI@2
-    displayName: 'Set OpenAI secrets and deploy image to ACA'
+    displayName: 'Deploy Docker image to ACA'
     env:
       AZURE_OPENAI_KEY: $(AZURE_OPENAI_KEY)
       AZURE_OPENAI_ENDPOINT: $(AZURE_OPENAI_ENDPOINT)
