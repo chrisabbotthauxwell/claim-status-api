@@ -38,3 +38,7 @@ The provisioned Container App showing the deployed and running claimstatusapi im
 ## Azure OpenAI
 The provisioned OpenAI Service showing the deployed gpt-4o-mini model deployment
 ![Provisioned OpenAI](images/provisioned-openai.png)
+
+## Azure API Management
+The provisioned API Management showing the configured Claims Status API endpoints and inbound processing rate limit policy:
+![Provisioned APIM](images/provisioned-apim.png)

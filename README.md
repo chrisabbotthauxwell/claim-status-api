@@ -349,6 +349,8 @@ APIM cannot be configured for Application Insights and Azure Monitor via `az cli
 
 Setting the `Correlation protocol` to `W3C` for APIM App Insights enables end-to-end tracing via OpenTelemetry OperationId correlation:
 
+![APIM correlation protocol](iac/images/apim-corrolation-protocol.png)
+
 |Component|Configuration|
 |--|--|
 |APIM|App Insights correlation protocol set to W3C<br/>Sampling set to 100% to capture all traces|
