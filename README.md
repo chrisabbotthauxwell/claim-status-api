@@ -13,6 +13,84 @@ A Claim Status API for an academic exercise
 - Test Driven Development (TDD)
 - Spec Driven Development (define a list of tasks in [Tasks.md](Tasks.md) and use GenAI assistance to complete them)
 
+## Conceptual architecture diagram
+```mermaid
+graph TB
+    subgraph "Azure DevOps Pipeline"
+        UT["Unit Tests"]
+        BUILD["Docker Build"]
+        TRIVY["Trivy Security Scan"]
+        AI_ADVICE["AI Remediation Advice"]
+        PUSH["Push to ACR"]
+        DEPLOY["Deploy to ACA"]
+        
+        UT --> BUILD
+        BUILD --> TRIVY
+        TRIVY --> AI_ADVICE
+        AI_ADVICE --> PUSH
+        PUSH --> DEPLOY
+    end
+
+    subgraph "Azure Infrastructure"
+        subgraph "Ingress & Security"
+            APIM["Azure API Management<br/>- Rate Limiting<br/>- Authentication<br/>- Analytics"]
+        end
+        
+        subgraph "Container Platform"
+            ACR["Azure Container Registry<br/>Docker Images"]
+            ACAE["Azure Container Apps Environment"]
+            ACA["Azure Container App<br/>Claim Status API (.NET 8)"]
+        end
+        
+        subgraph "AI Services"
+            AOAI["Azure OpenAI<br/>GPT-4o-mini Deployment"]
+        end
+        
+        subgraph "Observability"
+            AI["Application Insights<br/>OpenTelemetry"]
+            LAW["Log Analytics Workspace"]
+        end
+    end
+
+    subgraph "Container App Runtime"
+        subgraph "Web API Endpoints"
+            GET["GET /claims/{id}"]
+            POST["POST /claims/{id}/summarise"]
+        end
+        
+        subgraph "Data Files"
+            CLAIMS["claims.json"]
+            NOTES["notes.json"]
+        end
+        
+        GET --> CLAIMS
+        POST --> CLAIMS
+        POST --> NOTES
+        POST --> AOAI
+    end
+
+    CLIENT["External Client"] --> APIM
+    APIM --> ACA
+    ACA --> GET
+    ACA --> POST
+    
+    DEPLOY --> ACR
+    ACR --> ACA
+    ACA -.-> ACAE
+    
+    AI_ADVICE --> AOAI
+    
+    ACA --> AI
+    APIM --> AI
+    AI --> LAW
+    
+    style AOAI fill:#e1f5fe
+    style AI_ADVICE fill:#fff3e0
+    style POST fill:#fff3e0
+    style CLAIMS fill:#f3e5f5
+    style NOTES fill:#f3e5f5
+```
+
 ## Service description
 ### Get claim by id
 - Returns a static claim json object populated from claim details in `claims.json` by id
