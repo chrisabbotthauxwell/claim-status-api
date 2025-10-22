@@ -24,9 +24,9 @@ In the interest of producing a working pipeline, I decided it was more interesti
 ### Trivy Results
 Trivy detected 5x vulnerabilities in the Docker image that was produced:
 
-![Pipeline Docker image Trivy scan results 1](pipeline-docker-image-trivy-scan-results-1.png)
+![Pipeline Docker image Trivy scan results 1](images/pipeline-docker-image-trivy-scan-results-1.png)
 
-![Pipeline Docker image Trivy scan results 2](pipeline-docker-image-trivy-scan-results-2.png)
+![Pipeline Docker image Trivy scan results 2](images/pipeline-docker-image-trivy-scan-results-2.png)
 
 ## GenAI remediation suggestions
 The [pipeline](../pipelines/pipeline-run-complete.md) step `Get AI remediation suggestions for vulnerabilities` carries out the following tasks:
@@ -59,7 +59,7 @@ The `$vuln_summary` placeholder is replaced with the top 10 vulnerabilities in `
 ### OpenAI remediation results
 The OpenAI results are logged to the pipeline output. A typical response is shown below:
 
-![pipeline-genai-remediation-recommendations](pipeline-genai-remediation-recommendations.png)
+![pipeline-genai-remediation-recommendations](images/pipeline-genai-remediation-recommendations.png)
 
 ```
 ==============================================================================
@@ -125,19 +125,19 @@ The results are not as useful as the Trivy results.
 ### Inventory view
 The Inventory view shows Defender for Cloud enabled for the Container Registry and that Container Images are healthy:
 
-![Defender for Cloud Inventory](defender-for-cloud-inventory.png)
+![Defender for Cloud Inventory](images/defender-for-cloud-inventory.png)
 
 ### Security Posture
 Defender CSPM is not enabled (on cost grounds) so only summary Security Posture information is available:
 
-![Defender for Cloud security posture](defender-for-cloud-security-posture.png)
+![Defender for Cloud security posture](images/defender-for-cloud-security-posture.png)
 
 ### Defender for Containers
 Defender for Containers reports that there are no Unhealthy registries
-![No unhealthy registries](defender-for-containers.png)
+![No unhealthy registries](images/defender-for-containers.png)
 
 Defender for Containers shows that ACR contains one healthy image:
-![ACR contains one healthy image](defender-for-containers-scanned-images.png)
+![ACR contains one healthy image](images/defender-for-containers-scanned-images.png)
 
 Defender for Containers shows that the ClaimStatusAPI image is healthy:
-![ClaimStatusAPI image healthy](defender-for-containers-claimstatusapi-healthy.png)
+![ClaimStatusAPI image healthy](images/defender-for-containers-claimstatusapi-healthy.png)

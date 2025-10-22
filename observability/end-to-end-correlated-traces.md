@@ -19,13 +19,13 @@ Application insights shows end-to-end correlated transaction traces and a timeli
       - OpenAI ChatCompletion endpoint
 
 ### 1. Application Insights transaction search
-![Transaction search](end-to-end-transaction-search.png)
+![Transaction search](images/end-to-end-transaction-search.png)
 
 ### 2. Application Insights traces & events
-![Transaction traces and events](end-to-end-transaction.png)
+![Transaction traces and events](images/end-to-end-transaction.png)
 
 ### 3. Application Insights trace timeline
-![Transaction trace timeline](end-to-end-transaction-timeline.png)
+![Transaction trace timeline](images/end-to-end-transaction-timeline.png)
 
 ## KQL query
 Telemetry for a transation is corelated by `operation_Id`:
@@ -38,4 +38,4 @@ union *
 ```
 
 ### KQL results
-![End-to-end trace example](end-to-end-trace.png)
+![End-to-end trace example](images/end-to-end-trace.png)

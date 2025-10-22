@@ -9,4 +9,4 @@ AppRequests
 ```
 
 ### KQL query results
-![high-latency-traces](high-latency-traces.png)
+![high-latency-traces](images/high-latency-traces.png)

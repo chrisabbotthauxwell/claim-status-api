@@ -23,10 +23,10 @@ Azure DevOps pipeline variables are configured and used by the "Get AI remediati
 |`AZURE_OPENAI_KEY`|Pipeline secret|The access key for the deployed model|
 
 ### Completed pipeline execution
-![Pipeline steps complete](pipeline-steps-complete.png)
+![Pipeline steps complete](images/pipeline-steps-complete.png)
 
 ### Unit test results
-![Unit test results](pipeline-unit-test-results.png)
+![Unit test results](images/pipeline-unit-test-results.png)
 
 ### Vulnerability scanning and GenAI remediation
 > Docker image vulnerability scanning and GenAI-based remediation is discussed in [security-scans.md](../scans/security-scans.md)

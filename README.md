@@ -20,8 +20,8 @@ claim-status-api/
 │   ├── claimstatusapi-swagger.json         # OpenAPI json for APIM deployment
 │   └── rate-limit-policy.xml               # APIM rate limit policy definition
 ├── documentation/                          # auto-generated docs and references
-│   ├── auto-generated-adr.md               # Architectural Decision Records
-│   └── auto-generated-api-reference.md     # API reference
+│   ├── auto-generated-adr.md               # GenAI generated Architectural Decision Records
+│   └── auto-generated-api-reference.md     # GenAI generated API reference
 ├── iac/                                    # Az CLI templates
 │   ├── provisioned-azure-services.md       # The deployed services
 │   ├── create-apim.ps1                     # Deploy APIM instance
@@ -34,9 +34,11 @@ claim-status-api/
 ├── scans/                                  # link/screenshots to Defender findings
 │   └── security-scans.md                   # Details of security scans
 ├── observability/                          # saved KQL queries and sample screenshots
+│   ├── end-point-tests.md                  # Observed successful application executions
 │   ├── end-to-end-correlated-traces.md     # Observed traces and KQL queries
 │   ├── failure-responses.md                # Observed failed requests and KQL queries
-│   └── high-latency-traces.md              # Observed high-latency requests and KQL queries
+│   ├── high-latency-traces.md              # Observed high-latency requests and KQL queries
+│   └── incident-digests.md                 # GenAI Incident Digests
 ├── README.md
 └── claim-status-api.sln
 ```

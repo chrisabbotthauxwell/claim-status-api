@@ -23,4 +23,9 @@ AppRequests
 
 ### KQL results
 Various failures are recorded for the past 3 hours
-![Failed AppRequests](failure-responses-logs.png)
+![Failed AppRequests](images/failure-responses-logs.png)
+
+### Incident Digests
+Failied AppRequests logged in Log Analytics were exported and plain English Incident Digest reports were produced for each failure response code.
+
+> Details of the prepared Incident Digests can be seen in [incident-digests.md](incident-digests.md)
