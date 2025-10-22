@@ -1,4 +1,7 @@
 # Docker container image security scanning
+Two approaches are taken to security scanning:
+- In-pipeline image vulnerability scanning
+- Defender for Containers
 
 ## In-pipeline vulnerability scanning with Aquesecurity Trivy
 The [pipeline](../pipelines/pipeline-run-complete.md) step `Docker image Vulnerability scan` carries out the following tasks:
