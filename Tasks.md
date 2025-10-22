@@ -147,9 +147,9 @@ Notes / Helpful hints
 
 ## Enable observability
 - [x] APIM analytics + container insights into Log Analytics
-- [ ] Save a couple of KQL queries for errors/latency
+- [x] Save a couple of KQL queries for errors/latency
 
 ## Test endpoints via APIM
 - [x] Call `GET /claims/{id}` to verify status response
 - [x] Call `POST /claims/{id}/summarise` and confirm the response contains complete multi-part summary
-- [ ] Inspect logs/latency in APIM analytics and Container Insights 
+- [x] Inspect logs/latency in APIM analytics and Container Insights 

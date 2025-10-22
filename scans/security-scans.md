@@ -118,9 +118,14 @@ By following these steps, you can effectively mitigate the identified vulnerabil
 ```
 
 ## Defender for Cloud
-Defender for Cloud has been enabled on the subscription to enable Defender for Containers and to establish a Security Posture.
+Defender for Cloud has been enabled on the subscription to enable Defender for Containers.
 
 The results are not as useful as the Trivy results.
+
+### Inventory view
+The Inventory view shows Defender for Cloud enabled for the Container Registry and that Container Images are healthy:
+
+![Defender for Cloud Inventory](defender-for-cloud-inventory.png)
 
 ### Security Posture
 Defender CSPM is not enabled (on cost grounds) so only summary Security Posture information is available:
