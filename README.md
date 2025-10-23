@@ -1,6 +1,18 @@
 # claim-status-api
 A Claim Status API for an academic exercise.
 
+## Highlights
+|Highlight|  |
+|--|--|
+|API Implementation|c# .net 8.0 controller-based Web API|
+|API Testing|xUnit unit tests|
+|Containerisation|Docker + Azure Container Apps|
+|Infrastructure|Azure<br/>Defined as IaC and provisioned using Az CLI and Powershell|
+|DevOps|Azure Devops pipeline management for CI/CD|
+|Observability|Application Insights + Azure Monitor + Log Analytics<br/>API Management W3C correlation protocol + OpenTelemetry + ILogger|
+|Security|Aquasec Trivy Docker image scanning<br/>Defender for Cloud<br/>User secrets/environment variables + IConfiguration|
+|GenAI uses|Claim summarisation<br/>Pipeline build Docker image vulnerability remediation<br/>Generate Incident Digests<br/>Generate API Reference documentation<br/>Generate ADR|
+
 ## Repository structure
 ```
 
