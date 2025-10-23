@@ -34,26 +34,26 @@ The following results were prepared by GenAI through inspecting the KQL results 
 
 High latency is expected for the summarization endpoint due to the nature of AI inference, but should be monitored and bounded. 404s with high latency may indicate additional backend or data issues that warrant investigation..
 
-### Incident Digest
-
-**Summary:**  
-Between 21/10/2025 20:11:56 and 22/10/2025 17:42:27, the Claim Status API experienced 13 high-latency requests (over 2 seconds), primarily on the POST /v1/Claims/{id}/summarize endpoint, with durations ranging from ~2.2s up to ~5s.
-
-**Top Issues:**
-- Most common high-latency endpoint: POST /v1/Claims/{id}/summarize via APIM and Container App backend
-- Highest latency observed: 4975 ms on POST /v1/Claims/1002/summarize (APIM and backend)
-- All high-latency requests are associated with claim summarization, which involves an OpenAI call
-- Occasional 404s with high latency, indicating backend routing or data issues
-
-**Next Steps:**
-- Review OpenAI model response times and investigate if latency is due to external dependency
-- Check for any backend processing bottlenecks in ClaimsService or OpenAiService
-- Validate that high latency is expected for summarization (due to AI inference) and document acceptable thresholds
-- Investigate 404s with high latency for possible routing or data consistency issues
-
-**Recommended Actions:**
-- [ ] Set explicit latency SLO/SLA for summarization endpoints (e.g., <5s for POST /claims/{id}/summarize)
-- [ ] Monitor OpenAI dependency latency and consider retries or timeouts
-- [ ] Add user-facing messaging if summarization is expected to be slow
-- [ ] Review and optimize backend code for prompt construction and response parsing
-- [ ] Investigate and resolve high-latency 404s to improve error handling and routing
+> ### Incident Digest
+> 
+> **Summary:**  
+> Between 21/10/2025 20:11:56 and 22/10/2025 17:42:27, the Claim Status API experienced 13 high-latency requests (over 2 seconds), primarily on the POST /v1/Claims/{id}/summarize endpoint, with durations ranging from ~2.2s up to ~5s.
+> 
+> **Top Issues:**
+> - Most common high-latency endpoint: POST /v1/Claims/{id}/summarize via APIM and Container App backend
+> - Highest latency observed: 4975 ms on POST /v1/Claims/1002/summarize (APIM and backend)
+> - All high-latency requests are associated with claim summarization, which involves an OpenAI call
+> - Occasional 404s with high latency, indicating backend routing or data issues
+> 
+> **Next Steps:**
+> - Review OpenAI model response times and investigate if latency is due to external dependency
+> - Check for any backend processing bottlenecks in ClaimsService or OpenAiService
+> - Validate that high latency is expected for summarization (due to AI inference) and document acceptable thresholds
+> - Investigate 404s with high latency for possible routing or data consistency issues
+> 
+> **Recommended Actions:**
+> - [ ] Set explicit latency SLO/SLA for summarization endpoints (e.g., <5s for POST /claims/{id}/summarize)
+> - [ ] Monitor OpenAI dependency latency and consider retries or timeouts
+> - [ ] Add user-facing messaging if summarization is expected to be slow
+> - [ ] Review and optimize backend code for prompt construction and response parsing
+> - [ ] Investigate and resolve high-latency 404s to improve error handling and routing

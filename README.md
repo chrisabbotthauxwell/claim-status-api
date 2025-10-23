@@ -27,7 +27,7 @@ claim-status-api/
 │   │   │   └── notes.json                          # 5x notes blobs
 │   │   ├── Dockerfile                              # Dockerfile for Claim Status API
 │   │   └── ClaimStatusAPI.csproj
-│   └── ClaimStatusAPI.UnitTests                    # Claim STatus API unit tests folder
+│   └── ClaimStatusAPI.UnitTests                    # Claim Status API unit tests folder
 │       └── ClaimStatusAPI.UnitTests.csproj
 │
 ├── apim/                                           # ====== APIM DEFINITIONS & POLICIES ======
