@@ -7,6 +7,7 @@ A Claim Status API for an academic exercise.
 |API Implementation|c# .net 8.0 controller-based Web API|
 |API Testing|xUnit unit tests|
 |Containerisation|Docker + Azure Container Apps|
+|Ingress|Azure API Management + rate limit and subscription auth policies|
 |Infrastructure|Azure<br/>Defined as IaC and provisioned using Az CLI and Powershell|
 |DevOps|Azure Devops pipeline management for CI/CD|
 |Observability|Application Insights + Azure Monitor + Log Analytics<br/>API Management W3C correlation protocol + OpenTelemetry + ILogger|
