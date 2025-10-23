@@ -18,40 +18,49 @@ A Claim Status API for an academic exercise.
 ```
 
 claim-status-api/
-├── src/                                    # service source + Dockerfile
-│   ├── ClaimStatusAPI/                     # Claim Status API project folder
+├── src/                                            # ====== CLAIM STATUS API SOURCE CODE =====
+│   ├── ClaimStatusAPI/                             # Claim Status API project folder
 │   │   ├── Controllers/
 │   │   ├── Models/
 │   │   ├── mocks/
-│   │   │   ├── claims.json                 # 5x claim records
-│   │   │   └── notes.json                  # 5x notes blobs
-│   │   ├── Dockerfile                      # Dockerfile for Claim Status API
+│   │   │   ├── claims.json                         # 5x claim records
+│   │   │   └── notes.json                          # 5x notes blobs
+│   │   ├── Dockerfile                              # Dockerfile for Claim Status API
 │   │   └── ClaimStatusAPI.csproj
-│   └── ClaimStatusAPI.UnitTests            # Claim Status API unit tests project folder
+│   └── ClaimStatusAPI.UnitTests                    # Claim STatus API unit tests folder
 │       └── ClaimStatusAPI.UnitTests.csproj
-├── apim/                                   # APIM policy files or export
-│   ├── claimstatusapi-swagger.json         # OpenAPI json for APIM deployment
-│   └── rate-limit-policy.xml               # APIM rate limit policy definition
-├── documentation/                          # auto-generated docs and references
-│   ├── auto-generated-adr.md               # GenAI generated Architectural Decision Records
-│   └── auto-generated-api-reference.md     # GenAI generated API reference
-├── iac/                                    # Az CLI templates
-│   ├── provisioned-azure-services.md       # The deployed services
-│   ├── create-apim.ps1                     # Deploy APIM instance
-│   ├── create-infrastructure.ps1           # Provision core Azure infrastructure
-│   ├── setup-apim.ps1                      # Import API spec and configure APIM
-│   └── variables.ps1                       # Deployment variables
-├── pipelines/
-│   ├── azure-pipelines.yml                 # Azure DevOps pipeline
-│   └── pipeline-run-complete.md            # Details of pipeline execution
-├── scans/                                  # link/screenshots to Defender findings
-│   └── security-scans.md                   # Details of security scans
-├── observability/                          # saved KQL queries and sample screenshots
-│   ├── end-point-tests.md                  # Observed successful application executions
-│   ├── end-to-end-correlated-traces.md     # Observed traces and KQL queries
-│   ├── failure-responses.md                # Observed failed requests and KQL queries
-│   ├── high-latency-traces.md              # Observed high-latency requests and KQL queries
-│   └── incident-digests.md                 # GenAI Incident Digests
+│
+├── apim/                                           # ====== APIM DEFINITIONS & POLICIES ======
+│   ├── apim-logs.md                                # DOCS: APIM logs from Log Analytics
+│   ├── claimstatusapi-swagger.json                 # OpenAPI json for APIM deployment
+│   └── rate-limit-policy.xml                       # APIM rate limit policy definition
+│
+├── documentation/                                  # ===== AUTO-GENERATED DOCUMENTATION ======
+│   ├── auto-generated-adr.md                       # DOCS: GenAI generated Architectural Decision Records
+│   └── auto-generated-api-reference.md             # DOCS: GenAI generated API reference
+│
+├── iac/                                            # ======== INFRASTRUCTURE AS CODE =========
+│   ├── provisioned-azure-services.md               # DOCS: The deployed services
+│   ├── create-apim.ps1                             # Deploy APIM instance
+│   ├── create-infrastructure.ps1                   # Provision core Azure infrastructure
+│   ├── setup-apim.ps1                              # Import API spec and configure APIM
+│   └── variables.ps1                               # Deployment variables
+│
+├── pipelines/                                      # ========= PIPELINE DEFINITIONS ==========
+│   ├── azure-pipelines.yml                         # Azure DevOps pipeline
+│   └── pipeline-run-complete.md                    # Details of pipeline execution
+│
+├── scans/                                          # ======= SECURITY SCANS & FINDINGS =======
+│   └── security-scans.md                           # DOCS: Details of security scans
+│
+├── observability/                                  # ==== OBSERVATIONS, TRACES & INSIGHTS ====
+│   ├── end-point-tests.md                          # DOCS: Observed successful application executions
+│   ├── end-to-end-correlated-traces.md             # DOCS: Observed traces and KQL queries
+│   ├── failure-responses.md                        # DOCS: Observed failed requests and KQL queries
+│   ├── high-latency-traces.md                      # DOCS: Observed high-latency requests and KQL queries
+│   ├── incident-digests-failure-responses.md       # DOCS: GenAI Incident Digests for logged failure responses
+│   └── incident-digests-high-latency-requests.md   # DOCS: GenAI Incident Digests for logged high latency requests
+│
 ├── README.md
 └── claim-status-api.sln
 ```
@@ -383,7 +392,9 @@ Setting the `Correlation protocol` to `W3C` for APIM App Insights enables end-to
 #### Incident Digests
 Failied AppRequests logged in Log Analytics were exported and plain English Incident Digest reports were produced for each failure response code.
 
-> Details of the prepared Incident Digests can be seen in [incident-digests.md](observability/incident-digests.md)
+> Details of the prepared Incident Digests for logged Failure Responses can be seen in [incident-digests-failure-responses.md](observability/incident-digests-failure-responses.md)
+
+> Details of the prepared Incident Digests for logged High Latency Requests can be seen in [incident-digests-high-latency-requests.md](observability/incident-digests-high-latency-requests.md)
 
 ## Local execution
 ### Vanilla .net HTTP service

@@ -28,4 +28,4 @@ Various failures are recorded for the past 3 hours
 ### Incident Digests
 Failied AppRequests logged in Log Analytics were exported and plain English Incident Digest reports were produced for each failure response code.
 
-> Details of the prepared Incident Digests can be seen in [incident-digests.md](incident-digests.md)
+> Details of the prepared Incident Digests can be seen in [incident-digests-failure-responses.md](incident-digests-failure-responses.md)

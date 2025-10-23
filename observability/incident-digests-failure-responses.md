@@ -1,4 +1,4 @@
-# Incident Digests
+# Incident Digests for Failure Responses
 1. The KQL results shown in [failure-responses.md](failure-responses.md) were exported as CSV from Log Analytics and saved as CSV in [AppRequests-failure-responses-last-24h.csv](AppRequests-failure-responses-last-24h.csv)
 2. A prompt was constructed and passed to GenAI to request a brief Incident Digest for each failure response code
 
