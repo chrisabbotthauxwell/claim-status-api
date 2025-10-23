@@ -9,8 +9,8 @@ A Claim Status API for an academic exercise.
 |Containerisation|Docker + Azure Container Apps|
 |Ingress|Azure API Management + rate limit and subscription auth policies|
 |Infrastructure|Azure<br/>Defined as IaC and provisioned using Az CLI and Powershell|
-|DevOps|Azure Devops pipeline management for CI/CD|
-|Observability|Application Insights + Azure Monitor + Log Analytics<br/>API Management W3C correlation protocol + OpenTelemetry + ILogger|
+|DevOps|Azure Devops pipeline for CI/CD|
+|Observability|Application Insights + Azure Monitor + Log Analytics<br/>API Management W3C correlation protocol + OpenTelemetry + ILogger for end-to-end tracing|
 |Security|Aquasec Trivy Docker image scanning<br/>Defender for Cloud<br/>User secrets/environment variables + IConfiguration|
 |GenAI uses|Claim summarisation<br/>Pipeline build Docker image vulnerability remediation<br/>Generate Incident Digests<br/>Generate API Reference documentation<br/>Generate ADR|
 
