@@ -1,5 +1,5 @@
 # claim-status-api
-A Claim Status API for an academic exercise.
+A Claim Status API for an academic exercise. Implements a small C# .NET 8.0 controller-based Web API that reads static mock data and provides claim lookup and GenAI-powered summarisation.
 
 ## Highlights
 |Highlight|  |
@@ -382,8 +382,8 @@ Failied AppRequests logged in Log Analytics were exported and plain English Inci
 
 > Details of the prepared Incident Digests for logged High Latency Requests can be seen in [incident-digests-high-latency-requests.md](observability/incident-digests-high-latency-requests.md)
 
-## Local execution
-### Vanilla .net HTTP service
+## Running locally
+### dotnet
 Build and Run the HTTP WebAPI from the terminal window.
 
 1. Set secrets (see Secrets strategy section)
@@ -394,7 +394,7 @@ dotnet run
 ```
 3. Access the Swagger UI on http://localhost:5017/swagger.
 
-### Containerised (Docker) service
+### Docker
 Build and run the containerised HTTP service from Docker
 1. Build new Docker image from repo root
 ```
