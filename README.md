@@ -22,7 +22,7 @@ claim-status-api/
 │   ├── ClaimStatusAPI/                             # Claim Status API project folder
 │   │   ├── Controllers/
 │   │   ├── Models/
-│   │   ├── mocks/
+│   │   ├── mocks/                                  # /////////////// MOCK DATA /////////////// 
 │   │   │   ├── claims.json                         # 5x claim records
 │   │   │   └── notes.json                          # 5x notes blobs
 │   │   ├── Dockerfile                              # Dockerfile for Claim Status API
