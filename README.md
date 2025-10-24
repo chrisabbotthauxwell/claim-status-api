@@ -5,7 +5,7 @@ A Claim Status API for an academic exercise.
 |Highlight|  |
 |--|--|
 |API Implementation|c# .net 8.0 controller-based Web API|
-|API Testing|xUnit unit tests|
+|API Testing|Unit tests using xUnit and Moq|
 |Containerisation|Docker + Azure Container Apps|
 |Ingress|Azure API Management + rate limit and subscription auth policies|
 |Infrastructure|Azure<br/>Defined as IaC and provisioned using Az CLI and Powershell|
@@ -48,7 +48,7 @@ claim-status-api/
 │
 ├── pipelines/                                      # ========= PIPELINE DEFINITIONS ==========
 │   ├── azure-pipelines.yml                         # Azure DevOps pipeline
-│   └── pipeline-run-complete.md                    # Details of pipeline execution
+│   └── pipeline-run-complete.md                    # DOCS: Details of pipeline execution
 │
 ├── scans/                                          # ======= SECURITY SCANS & FINDINGS =======
 │   └── security-scans.md                           # DOCS: Details of security scans
@@ -145,20 +145,6 @@ graph TB
     style CLAIMS fill:#f3e5f5
     style NOTES fill:#f3e5f5
 ```
-### Tech stack
-|Technology domain|Technology choice|
-|--|--|
-|Application development framework|C# .net 8.0 (LTS)|
-|Application development tools|VS Code|
-|Source control|Github|
-|Unit test framework|xUnit|
-|Test mock frameowk|Moq|
-|Containerisation|Docker|
-|Cloud platform|Azure|
-|Infrastructure provisioning|Powershell|
-|Infrastructure deployment and configuration|Az CLI<br/>VS Code Azure API Management Extension|
-|Application CI build & deploy pipelines|Azure DevOps|
-
 ### Development approach
 - Test Driven Development (TDD)
 - Spec Driven Development (define a list of tasks in [Tasks.md](Tasks.md) and use GenAI assistance to complete them)
